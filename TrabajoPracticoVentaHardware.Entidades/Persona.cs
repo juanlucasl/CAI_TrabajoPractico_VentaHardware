@@ -1,9 +1,23 @@
+using System;
+
 namespace TrabajoPracticoVentaHardware.Entidades
 {
     public abstract class Persona
     {
+        // Constructor
+        protected Persona() {}
+
+        protected Persona(string nombre, string apellido, string direccion, long telefono, string mail)
+        {
+            _nombre = nombre ?? throw new ArgumentNullException(nameof(nombre));
+            _apellido = apellido ?? throw new ArgumentNullException(nameof(apellido));
+            _direccion = direccion ?? throw new ArgumentNullException(nameof(direccion));
+            _telefono = telefono;
+            _mail = mail ?? throw new ArgumentNullException(nameof(mail));
+        }
+
         // Atributos
-        private readonly int _id;
+        private int _id;
         private string _nombre;
         private string _apellido;
         private string _direccion;
@@ -11,34 +25,40 @@ namespace TrabajoPracticoVentaHardware.Entidades
         private string _mail;
 
         // Propiedades
-        protected int Id
+        public int Id
         {
             get { return _id; }
+            set { _id = value; }
         }
 
-        protected string Nombre
+        public string Nombre
         {
             get { return _nombre; }
+            set { _nombre = value; }
         }
 
-        protected string Apellido
+        public string Apellido
         {
             get { return _apellido; }
+            set { _apellido = value; }
         }
 
-        protected string Direccion
+        public string Direccion
         {
             get { return _direccion; }
+            set { _direccion = value; }
         }
 
-        protected long Telefono
+        public long Telefono
         {
             get { return _telefono; }
+            set { _telefono = value; }
         }
 
-        protected string Mail
+        public string Mail
         {
             get { return _mail; }
+            set { _mail = value; }
         }
     }
 }
