@@ -7,8 +7,9 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
     {
         internal static readonly string[] OpcionesMenuPrincipal = {
             "Hardware Springfield - Venta de hardware\n",
-            "9- Acerca de",
-            "0- Salir del programa"
+            "1) Consultar clientes",
+            "9) Acerca de",
+            "0) Salir del programa"
         };
 
         /// <summary>Muestra una lista de opciones en la consola.</summary>
