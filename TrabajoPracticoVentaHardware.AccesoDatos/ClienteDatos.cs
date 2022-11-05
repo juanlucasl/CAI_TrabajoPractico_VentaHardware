@@ -9,10 +9,10 @@ namespace TrabajoPracticoVentaHardware.AccesoDatos
     {
         /// <summary>Devuelve una coleccion con todos los clientes correspondientes al TP.</summary>
         /// <returns>Coleccion con todos los clientes correspondientes al TP.</returns>
-        public IEnumerable<Cliente> ObtenerTodos()
+        public List<Cliente> ObtenerTodos()
         {
             string json2 = WebHelper.Get("cliente");
-            IEnumerable<Cliente> resultado = MapearColeccion(json2);
+            List<Cliente> resultado = MapearColeccion(json2);
             return resultado;
         }
 
@@ -22,9 +22,9 @@ namespace TrabajoPracticoVentaHardware.AccesoDatos
         /// </summary>
         /// <param name="json">Json de Clientes.</param>
         /// <returns>Coleccion de Clientes.</returns>
-        private IEnumerable<Cliente> MapearColeccion(string json)
+        private List<Cliente> MapearColeccion(string json)
         {
-            IEnumerable<Cliente> clientes = JsonConvert.DeserializeObject<IEnumerable<Cliente>>(json);
+            List<Cliente> clientes = JsonConvert.DeserializeObject<List<Cliente>>(json);
             return clientes;
         }
     }
