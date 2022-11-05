@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TrabajoPracticoVentaHardware.Entidades;
 using TrabajoPracticoVentaHardware.Servicio;
 
@@ -52,12 +53,25 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
         /// <summary>Muestra en consola un listado de todos los clientes correspondientes al TP.</summary>
         private static void MostrarClientes()
         {
-            IEnumerable<Cliente> clientes = _clienteServicio.ObtenerClientes();
+            try
+            {
+                List<Cliente> clientes = _clienteServicio.ObtenerClientes();
 
-            Console.WriteLine("Listado de clientes:\n");
-            foreach (Cliente cliente in clientes) Console.WriteLine(cliente.ToString());
+                if (clientes == null || !clientes.Any())
+                {
+                    InputHelper.PedirContinuacion("No hay clientes para mostrar.");
+                    return;
+                }
+
+                Console.WriteLine("Listado de clientes:\n");
+                foreach (Cliente cliente in clientes) Console.WriteLine(cliente.ToString());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Ocurrio un error consultar los clientes. Vuelva a intentar en unos minutos.");
+            }
+
             Console.WriteLine();
-
             InputHelper.PedirContinuacion();
         }
 

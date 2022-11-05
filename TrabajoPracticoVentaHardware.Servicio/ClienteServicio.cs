@@ -19,7 +19,7 @@ namespace TrabajoPracticoVentaHardware.Servicio
 
         /// <summary>Devuelve una coleccion con todos los clientes correspondientes al TP.</summary>
         /// <returns>Coleccion con todos los clientes correspondientes al TP.</returns>
-        public IEnumerable<Cliente> ObtenerClientes()
+        public List<Cliente> ObtenerClientes()
         {
             return _clienteDatos.ObtenerTodos();
         }
