@@ -1,11 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using TrabajoPracticoVentaHardware.Entidades;
+using TrabajoPracticoVentaHardware.Servicio;
 
 namespace TrabajoPracticoVentaHardware.InterfazConsola
 {
-    public static class Program
+    static class Program
     {
-        public static void Main(string[] args)
+        private static ClienteServicio _clienteServicio;
+
+        static void Main(string[] args)
         {
+            _clienteServicio = new ClienteServicio();
+
             int opcionMenu;
 
             do
@@ -15,6 +22,12 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
 
                 switch (opcionMenu)
                 {
+                    case 1: // Consultar clientes
+                    {
+                        MostrarClientes();
+                        break;
+                    }
+
                     case 9: // Acerca de
                     {
                         MostrarAcercaDe();
@@ -33,8 +46,19 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                         break;
                     }
                 }
-
             } while (opcionMenu != 0);
+        }
+
+        /// <summary>Muestra en consola un listado de todos los clientes correspondientes al TP.</summary>
+        private static void MostrarClientes()
+        {
+            IEnumerable<Cliente> clientes = _clienteServicio.ObtenerClientes();
+
+            Console.WriteLine("Listado de clientes:\n");
+            foreach (Cliente cliente in clientes) Console.WriteLine(cliente.ToString());
+            Console.WriteLine();
+
+            InputHelper.PedirContinuacion();
         }
 
         private static void MostrarAcercaDe()

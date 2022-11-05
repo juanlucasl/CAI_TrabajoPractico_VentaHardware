@@ -30,5 +30,11 @@ namespace TrabajoPracticoVentaHardware.Entidades
             get { return _activo; }
             set { _activo = value; }
         }
+
+        // Metodos
+        public override string ToString()
+        {
+            return $"{Nombre} {Apellido}";
+        }
     }
 }
