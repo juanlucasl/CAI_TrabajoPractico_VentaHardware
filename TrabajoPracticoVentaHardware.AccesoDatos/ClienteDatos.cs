@@ -11,8 +11,8 @@ namespace TrabajoPracticoVentaHardware.AccesoDatos
         /// <returns>Coleccion con todos los clientes correspondientes al TP.</returns>
         public List<Cliente> ObtenerTodos()
         {
-            string json2 = WebHelper.Get("cliente");
-            List<Cliente> resultado = MapearColeccion(json2);
+            string json = WebHelper.Get("cliente");
+            List<Cliente> resultado = MapearColeccion(json);
             return resultado;
         }
 

@@ -23,9 +23,15 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
 
                 switch (opcionMenu)
                 {
-                    case 1: // Consultar clientes
+                    case 1: // Submenu de clientes
                     {
-                        MostrarClientes();
+                        MenuClientes();
+                        break;
+                    }
+
+                    case 2: // Submenu de productos
+                    {
+                        MenuProductos();
                         break;
                     }
 
@@ -38,6 +44,38 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                     case 0: // Salir del programa
                     {
                         Console.WriteLine("Salir del programa");
+                        break;
+                    }
+
+                    default: // Opcion invalida
+                    {
+                        InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
+                        break;
+                    }
+                }
+            } while (opcionMenu != 0);
+        }
+
+        /// <summary>Muestra el menu de clientes.</summary>
+        private static void MenuClientes()
+        {
+            int opcionMenu;
+
+            do
+            {
+                MenuHelper.MostrarMenu(MenuHelper.OpcionesMenuCliente);
+                opcionMenu = InputHelper.PedirNumeroNatural("Ingresar una opcion:");
+
+                switch (opcionMenu)
+                {
+                    case 1: // Consultar clientes
+                    {
+                        MostrarClientes();
+                        break;
+                    }
+
+                    case 0: // Volver al Menu principal.
+                    {
                         break;
                     }
 
@@ -73,6 +111,32 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
 
             Console.WriteLine();
             InputHelper.PedirContinuacion();
+        }
+
+        /// <summary>Muestra el menu de productos.</summary>
+        private static void MenuProductos()
+        {
+            int opcionMenu;
+
+            do
+            {
+                MenuHelper.MostrarMenu(MenuHelper.OpcionesMenuProducto);
+                opcionMenu = InputHelper.PedirNumeroNatural("Ingresar una opcion:");
+
+                switch (opcionMenu)
+                {
+                    case 0: // Volver al Menu principal.
+                    {
+                        break;
+                    }
+
+                    default: // Opcion invalida
+                    {
+                        InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
+                        break;
+                    }
+                }
+            } while (opcionMenu != 0);
         }
 
         private static void MostrarAcercaDe()
