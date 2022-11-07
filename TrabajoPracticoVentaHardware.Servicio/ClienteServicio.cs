@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TrabajoPracticoVentaHardware.AccesoDatos;
 using TrabajoPracticoVentaHardware.Entidades;
@@ -22,6 +23,18 @@ namespace TrabajoPracticoVentaHardware.Servicio
         public List<Cliente> ObtenerClientes()
         {
             return _clienteDatos.ObtenerTodos();
+        }
+
+        /// <summary>Recibe un cliente para almacenar en el sistema.</summary>
+        /// <param name="cliente">Cliente a almacenar.</param>
+        /// <returns>Resultado de la transaccion.</returns>
+        public int InsertarCliente(Cliente cliente)
+        {
+            ResultadoTransaccion resultadoTransaccion = _clienteDatos.InsertarCliente(cliente);
+
+            if (!resultadoTransaccion.IsOk) throw new Exception(resultadoTransaccion.Error);
+
+            return resultadoTransaccion.Id;
         }
     }
 }

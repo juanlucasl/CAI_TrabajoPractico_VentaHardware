@@ -34,7 +34,20 @@ namespace TrabajoPracticoVentaHardware.Entidades
         // Metodos
         public override string ToString()
         {
-            return $"{Nombre} {Apellido}";
+            string apellido = string.IsNullOrWhiteSpace(Apellido) ? "" : $"{Apellido}, ";
+
+            return $"{Id}) {apellido}{Nombre}\n" +
+                   $"Telefono: {PropiedadDisplay(Telefono.ToString())}\n" +
+                   $"Email: {PropiedadDisplay(Email)}\n" +
+                   $"Direccion: {PropiedadDisplay(Direccion)}";
+        }
+
+        /// <summary>Devuelve "N/A" si un string es vacio, null o "0". De lo contrario devuelve el string.</summary>
+        /// <param name="propiedad">Propiedad a mostrar.</param>
+        /// <returns>String recibido o "N/A".</returns>
+        private string PropiedadDisplay(string propiedad)
+        {
+            return (string.IsNullOrWhiteSpace(propiedad) || propiedad == "0") ? "N/A" : propiedad;
         }
     }
 }

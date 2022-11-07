@@ -55,7 +55,7 @@ namespace TrabajoPracticoVentaHardware.Entidades
             set { _telefono = value; }
         }
 
-        public string Mail
+        public string Email
         {
             get { return _mail; }
             set { _mail = value; }
