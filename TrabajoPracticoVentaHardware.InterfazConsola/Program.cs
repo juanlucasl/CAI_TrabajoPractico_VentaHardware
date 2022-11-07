@@ -74,6 +74,12 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                         break;
                     }
 
+                    case 2: // Alta de cliente
+                    {
+                        AltaCliente();
+                        break;
+                    }
+
                     case 0: // Volver al Menu principal.
                     {
                         break;
@@ -102,7 +108,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 }
 
                 Console.WriteLine("Listado de clientes:\n");
-                foreach (Cliente cliente in clientes) Console.WriteLine(cliente.ToString());
+                foreach (Cliente cliente in clientes) Console.WriteLine($"{cliente}\n");
             }
             catch (Exception e)
             {
@@ -111,6 +117,30 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
 
             Console.WriteLine();
             InputHelper.PedirContinuacion();
+        }
+
+        /// <summary>
+        /// Solicita informacion para dar de alta a un nuevo cliente y envia la peticion de alta al servicio.
+        /// </summary>
+        private static void AltaCliente()
+        {
+            string nombre = InputHelper.PedirString("Ingresar nombre del cliente:", true);
+            string apellido = InputHelper.PedirString("Ingresar apellido del cliente:");
+            string direccion = InputHelper.PedirString("Ingresar direccion del cliente:");
+            long telefono = InputHelper.PedirNumeroTelefonico();
+            string mail = InputHelper.PedirString("Ingresar email del cliente:");
+
+            Cliente cliente = new Cliente(nombre, apellido, direccion, telefono, mail);
+
+            try
+            {
+                _clienteServicio.InsertarCliente(cliente);
+                InputHelper.PedirContinuacion($"Cliente {cliente.Nombre} ingresado con exito");
+            }
+            catch (Exception e)
+            {
+                InputHelper.PedirContinuacion($"Ocurrio un error al dar de alta al cliente: {e.Message}");
+            }
         }
 
         /// <summary>Muestra el menu de productos.</summary>
