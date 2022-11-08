@@ -74,11 +74,13 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             bool obligatorio = false
         )
         {
-            double numeroReal;
+            double numeroReal = 0;
+            string input;
 
             Console.WriteLine(mensaje);
-            while (!double.TryParse(Console.ReadLine(), out numeroReal) || numeroReal < min || numeroReal > max)
+            while (!double.TryParse(input = Console.ReadLine(), out numeroReal) || numeroReal < min || numeroReal > max)
             {
+                CancelarSiEsC(input);
                 if (!obligatorio && numeroReal == 0) return numeroReal;
                 Console.WriteLine("El numero ingresado no es valido. Ingresar un numero distinto:");
             }
@@ -97,15 +99,16 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
         internal static string PedirString(string mensaje = "Ingresar texto", bool obligatorio = false)
         {
             Console.WriteLine(mensaje);
-            string inputString = Console.ReadLine();
+            string input = Console.ReadLine();
+            CancelarSiEsC(input);
 
-            while (obligatorio && string.IsNullOrWhiteSpace(inputString))
+            while (obligatorio && string.IsNullOrWhiteSpace(input))
             {
                 Console.WriteLine("El texto ingresado no puede estar vacio. Ingrese un texto distinto.");
-                inputString = Console.ReadLine();
+                input = Console.ReadLine();
             }
 
-            return inputString;
+            return input;
         }
 
         /// <summary>Pide que presione una tecla para continuar.</summary>
@@ -123,6 +126,14 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
         private static bool EsInteger(double numero)
         {
             return !numero.ToString(CultureInfo.InvariantCulture).Contains(".");
+        }
+
+        /// <summary>Recibe un string y, si es igual a "c", lanza una OperationCanceledException.</summary>
+        /// <param name="input">String a comparar.</param>
+        /// <exception cref="OperationCanceledException">Si el string que se recibio es igual a "c".</exception>
+        private static void CancelarSiEsC(string input)
+        {
+            if (input == "c") throw new OperationCanceledException("Accion cancelada.");
         }
     }
 }
