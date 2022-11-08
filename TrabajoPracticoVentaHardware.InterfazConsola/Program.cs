@@ -124,18 +124,21 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
         /// </summary>
         private static void AltaCliente()
         {
-            string nombre = InputHelper.PedirString("Ingresar nombre del cliente:", true);
-            string apellido = InputHelper.PedirString("Ingresar apellido del cliente:");
-            string direccion = InputHelper.PedirString("Ingresar direccion del cliente:");
-            long telefono = InputHelper.PedirNumeroTelefonico();
-            string mail = InputHelper.PedirString("Ingresar email del cliente:");
-
-            Cliente cliente = new Cliente(nombre, apellido, direccion, telefono, mail);
-
             try
             {
+                string nombre = InputHelper.PedirString("Ingresar nombre del cliente:", true);
+                string apellido = InputHelper.PedirString("Ingresar apellido del cliente:");
+                string direccion = InputHelper.PedirString("Ingresar direccion del cliente:");
+                long telefono = InputHelper.PedirNumeroTelefonico();
+                string mail = InputHelper.PedirString("Ingresar email del cliente:");
+
+                Cliente cliente = new Cliente(nombre, apellido, direccion, telefono, mail);
+
                 _clienteServicio.InsertarCliente(cliente);
                 InputHelper.PedirContinuacion($"Cliente {cliente.Nombre} ingresado con exito");
+            }
+            catch (OperationCanceledException operationCanceledException) {
+                InputHelper.PedirContinuacion(operationCanceledException.Message);
             }
             catch (Exception e)
             {
