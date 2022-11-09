@@ -5,17 +5,21 @@ namespace TrabajoPracticoVentaHardware.Entidades
     public class Proveedor
     {
         // Constructor
-        public Proveedor() {}
+        public Proveedor()
+        {
+        }
 
-        public Proveedor(int idProducto)
+        public Proveedor(int idProducto, string nombre)
         {
             _idProducto = idProducto;
+            _nombre = nombre;
             _fechaAlta = DateTime.Now;
         }
 
         // Atributos
         private int _id;
         private int _idProducto;
+        private string _nombre;
         private DateTime _fechaAlta;
         private DateTime _fechaBaja;
 
@@ -30,6 +34,12 @@ namespace TrabajoPracticoVentaHardware.Entidades
         {
             get { return _idProducto; }
             set { _idProducto = value; }
+        }
+
+        public string Nombre
+        {
+            get { return _nombre; }
+            set { _nombre = value; }
         }
 
         public DateTime FechaAlta
