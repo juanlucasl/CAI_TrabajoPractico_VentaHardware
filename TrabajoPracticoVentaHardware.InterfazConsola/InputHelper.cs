@@ -19,7 +19,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
 
             try
             {
-                opcionMenu = (int)PedirNumeroEntero(mensaje, 0, 9);
+                opcionMenu = (int)PedirNumeroEntero(mensaje, 0, 9, true);
             }
             catch (Exception)
             {
