@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 
 namespace TrabajoPracticoVentaHardware.InterfazConsola
 {
@@ -7,24 +6,27 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
     internal static class InputHelper
     {
         /// <summary>
-        /// Solicita al usuario que ingrese un numero natural. Una vez que el usuario ingreso lo pedido, devuelve el
-        /// valor. Opcionalmente recibe un mensaje para mostrar al usuario y un numero maximo. El minimo es siempre cero.
+        /// Solicita al usuario que ingrese un numero natural del cero al nueve. Una vez que el usuario ingreso lo
+        /// pedido, devuelve el valor. Devuelve cero si el usuario cancela la accion.
         /// </summary>
         /// <param name="mensaje">
-        /// Mensaje para mostrarle al usuario antes de que ingrese el numero (default "Ingresar un numero natural")
+        /// Mensaje para mostrarle al usuario antes de que ingrese el numero (default "Ingresar una opcion:")
         /// </param>
-        /// <param name="max">Valor maximo para el numero que el usuario puede ingresar.</param>
-        /// <returns>El numero que ingreso el usuario</returns>
-        internal static int PedirNumeroNatural(string mensaje = "Ingresar un numero natural", int max = int.MaxValue)
+        /// <returns>El numero que ingreso el usuario, o cero si el usuario cancelo la accion.</returns>
+        internal static int PedirOpcionMenu(string mensaje = "Ingresar una opcion:")
         {
-            double numeroReal;
+            int opcionMenu;
 
-            while (!EsInteger(numeroReal = PedirNumeroReal(mensaje, 0, max)))
+            try
             {
-                Console.WriteLine("El numero ingresado no es valido. Ingresar un numero distinto:");
+                opcionMenu = (int)PedirNumeroEntero(mensaje, 0, 9);
+            }
+            catch (Exception)
+            {
+                return 0;
             }
 
-            return (int)numeroReal;
+            return opcionMenu;
         }
 
         /// <summary>
@@ -46,14 +48,41 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             const long rangoMaximo = 999999999999999;
             const long rangoMinimo = 1000;
 
-            double numeroTelefonico;
+            long numeroTelefonico = PedirNumeroEntero(mensaje, rangoMinimo, rangoMaximo);
 
-            while (!EsInteger(numeroTelefonico = PedirNumeroReal(mensaje, rangoMinimo, rangoMaximo, obligatorio)))
+            return numeroTelefonico;
+        }
+
+        /// <summary>
+        /// Solicita al usuario que ingrese un numero entero. Una vez que el usuario ingreso lo pedido, devuelve el
+        /// valor. Opcionalmente recibe un mensaje para mostrar al usuario, un numero minimo y un numero maximo.
+        /// </summary>
+        /// <param name="mensaje">
+        /// Mensaje para mostrarle al usuario antes de que ingrese el numero (default "Ingresar un numero:")
+        /// </param>
+        /// <param name="min">Valor minimo para el numero que el usuario puede ingresar.</param>
+        /// <param name="max">Valor maximo para el numero que el usuario puede ingresar.</param>
+        /// <param name="obligatorio">Flag que indica si se debe rechazar al numero ingresado si es cero.</param>
+        /// <returns>El numero que ingreso el usuario</returns>
+        internal static long PedirNumeroEntero(
+            string mensaje = "Ingresar un numero:",
+            long min = long.MinValue,
+            long max = long.MaxValue,
+            bool obligatorio = false
+        )
+        {
+            long numeroEntero;
+            string input;
+
+            Console.WriteLine(mensaje);
+            while (!long.TryParse(input = Console.ReadLine(), out numeroEntero) || numeroEntero < min || numeroEntero > max)
             {
+                CancelarSiEsC(input);
+                if (!obligatorio && string.IsNullOrWhiteSpace(input)) return numeroEntero;
                 Console.WriteLine("El numero ingresado no es valido. Ingresar un numero distinto:");
             }
 
-            return (long)numeroTelefonico;
+            return numeroEntero;
         }
 
         /// <summary>
@@ -61,27 +90,27 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
         /// valor. Opcionalmente recibe un mensaje para mostrar al usuario, un numero minimo y un numero maximo.
         /// </summary>
         /// <param name="mensaje">
-        /// Mensaje para mostrarle al usuario antes de que ingrese el numero (default "Ingresar un numero")
+        /// Mensaje para mostrarle al usuario antes de que ingrese el numero (default "Ingresar un numero:")
         /// </param>
         /// <param name="min">Valor minimo para el numero que el usuario puede ingresar.</param>
         /// <param name="max">Valor maximo para el numero que el usuario puede ingresar.</param>
         /// <param name="obligatorio">Flag que indica si se debe rechazar al numero ingresado si es cero.</param>
         /// <returns>El numero que ingreso el usuario</returns>
         internal static double PedirNumeroReal(
-            string mensaje = "Ingresar un numero",
+            string mensaje = "Ingresar un numero:",
             double min = double.MinValue,
             double max = double.MaxValue,
             bool obligatorio = false
         )
         {
-            double numeroReal = 0;
+            double numeroReal;
             string input;
 
             Console.WriteLine(mensaje);
             while (!double.TryParse(input = Console.ReadLine(), out numeroReal) || numeroReal < min || numeroReal > max)
             {
                 CancelarSiEsC(input);
-                if (!obligatorio && numeroReal == 0) return numeroReal;
+                if (!obligatorio && string.IsNullOrWhiteSpace(input)) return numeroReal;
                 Console.WriteLine("El numero ingresado no es valido. Ingresar un numero distinto:");
             }
 
@@ -90,13 +119,13 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
 
         /// <summary> Solicita al usuario que ingrese texto.</summary>
         /// <param name="mensaje">
-        /// Mensaje para mostrarle al usuario antes de que ingrese el text (default "Ingresar texto")
+        /// Mensaje para mostrarle al usuario antes de que ingrese el text (default "Ingresar texto:")
         /// </param>
         /// <param name="obligatorio">
         /// Flag booleano que indica si se debe rechazar al texto ingresado si esta vacio (default false).
         /// </param>
         /// <returns type="string">El texto que ingreso el usuario</returns>
-        internal static string PedirString(string mensaje = "Ingresar texto", bool obligatorio = false)
+        internal static string PedirString(string mensaje = "Ingresar texto:", bool obligatorio = false)
         {
             Console.WriteLine(mensaje);
             string input = Console.ReadLine();
@@ -104,7 +133,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
 
             while (obligatorio && string.IsNullOrWhiteSpace(input))
             {
-                Console.WriteLine("El texto ingresado no puede estar vacio. Ingrese un texto distinto.");
+                Console.WriteLine("El texto ingresado no puede estar vacio. Ingresar un texto distinto:");
                 input = Console.ReadLine();
             }
 
@@ -120,13 +149,6 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             Console.ReadKey();
         }
 
-        /// <summary>Recibe un numero como parametro y verifica si se trata de un numero entero.</summary>
-        /// <param name="numero">Numero a verificar.</param>
-        /// <returns>true si el numero es entero. De lo contrario false.</returns>
-        private static bool EsInteger(double numero)
-        {
-            return !numero.ToString(CultureInfo.InvariantCulture).Contains(".");
-        }
 
         /// <summary>Recibe un string y, si es igual a "c", lanza una OperationCanceledException.</summary>
         /// <param name="input">String a comparar.</param>
