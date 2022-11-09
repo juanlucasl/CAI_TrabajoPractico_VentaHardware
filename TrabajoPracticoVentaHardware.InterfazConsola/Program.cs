@@ -19,7 +19,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             do
             {
                 MenuHelper.MostrarMenu(MenuHelper.OpcionesMenuPrincipal);
-                opcionMenu = InputHelper.PedirNumeroNatural("Ingresar una opcion:");
+                opcionMenu = InputHelper.PedirOpcionMenu();
 
                 switch (opcionMenu)
                 {
@@ -64,7 +64,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             do
             {
                 MenuHelper.MostrarMenu(MenuHelper.OpcionesMenuCliente);
-                opcionMenu = InputHelper.PedirNumeroNatural("Ingresar una opcion:");
+                opcionMenu = InputHelper.PedirOpcionMenu();
 
                 switch (opcionMenu)
                 {
@@ -124,6 +124,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
         /// </summary>
         private static void AltaCliente()
         {
+            Console.WriteLine("(Ingresar 'c' para cancelar)");
             try
             {
                 string nombre = InputHelper.PedirString("Ingresar nombre del cliente:", true);
@@ -154,7 +155,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             do
             {
                 MenuHelper.MostrarMenu(MenuHelper.OpcionesMenuProducto);
-                opcionMenu = InputHelper.PedirNumeroNatural("Ingresar una opcion:");
+                opcionMenu = InputHelper.PedirOpcionMenu();
 
                 switch (opcionMenu)
                 {
