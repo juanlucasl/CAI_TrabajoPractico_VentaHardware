@@ -13,7 +13,7 @@ namespace TrabajoPracticoVentaHardware.AccesoDatos
         /// <returns>Coleccion con todos los clientes correspondientes al TP.</returns>
         public List<Cliente> ObtenerTodos()
         {
-            string json = WebHelper.Get("cliente");
+            string json = WebHelper.Get(ConfigurationManager.AppSettings["PATH_CLIENTE"]);
             List<Cliente> resultado = MapearColeccion(json);
             return resultado;
         }
@@ -24,7 +24,7 @@ namespace TrabajoPracticoVentaHardware.AccesoDatos
         public ResultadoTransaccion InsertarCliente(Cliente cliente)
         {
             NameValueCollection clienteDatos = ReverseMap(cliente);
-            string json = WebHelper.Post("cliente", clienteDatos);
+            string json = WebHelper.Post(ConfigurationManager.AppSettings["PATH_CLIENTE"], clienteDatos);
 
             ResultadoTransaccion resultadoTransaccion = JsonConvert.DeserializeObject<ResultadoTransaccion>(json);
             return resultadoTransaccion;
