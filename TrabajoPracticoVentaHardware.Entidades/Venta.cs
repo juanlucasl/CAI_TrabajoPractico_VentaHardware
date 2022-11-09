@@ -7,10 +7,10 @@ namespace TrabajoPracticoVentaHardware.Entidades
         // Constructor
         public Venta() {}
 
-        public Venta(int idCliente, int idVenta, int cantidad)
+        public Venta(int idCliente, int idProducto, int cantidad)
         {
             _idCliente = idCliente;
-            _idVenta = idVenta;
+            _idProducto = idProducto;
             _cantidad = cantidad;
             _fechaAlta = DateTime.Now;
         }
@@ -18,7 +18,7 @@ namespace TrabajoPracticoVentaHardware.Entidades
         // Atributos
         private int _id;
         private int _idCliente;
-        private int _idVenta;
+        private int _idProducto;
         private int _cantidad;
         private DateTime _fechaAlta;
 
@@ -35,10 +35,10 @@ namespace TrabajoPracticoVentaHardware.Entidades
             set { _idCliente = value; }
         }
 
-        public int IdVenta
+        public int IdProducto
         {
-            get { return _idVenta; }
-            set { _idVenta = value; }
+            get { return _idProducto; }
+            set { _idProducto = value; }
         }
 
         public int Cantidad
