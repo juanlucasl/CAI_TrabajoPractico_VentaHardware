@@ -60,5 +60,14 @@ namespace TrabajoPracticoVentaHardware.Entidades
             get { return _stock; }
             set { _stock = value; }
         }
+
+        // Metodos
+        public override string ToString()
+        {
+            return $"{_id}) {_nombre}\n" +
+                   $"Categoria: {(Categoria)_idCategoria}\n" +
+                   $"Precio: ${_precio}\n" +
+                   $"Stock: {_stock}";
+        }
     }
 }
