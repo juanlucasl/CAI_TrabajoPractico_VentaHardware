@@ -21,7 +21,7 @@ namespace TrabajoPracticoVentaHardware.Entidades
         private int _idProducto;
         private string _nombre;
         private DateTime _fechaAlta;
-        private DateTime _fechaBaja;
+        private DateTime? _fechaBaja;
 
         // Propiedades
         public int Id
@@ -48,10 +48,16 @@ namespace TrabajoPracticoVentaHardware.Entidades
             set { _fechaAlta = value; }
         }
 
-        public DateTime FechaBaja
+        public DateTime? FechaBaja
         {
             get { return _fechaBaja; }
             set { _fechaBaja = value; }
+        }
+
+        // Metodos
+        public override string ToString()
+        {
+            return $"{_id}) {_nombre}";
         }
     }
 }
