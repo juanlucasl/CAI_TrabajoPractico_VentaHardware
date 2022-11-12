@@ -9,10 +9,12 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
     static class Program
     {
         private static ClienteServicio _clienteServicio;
+        private static ReporteServicio _reporteServicio;
 
         static void Main(string[] args)
         {
             _clienteServicio = new ClienteServicio();
+            _reporteServicio = new ReporteServicio();
 
             int opcionMenu;
 
@@ -118,7 +120,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             }
             catch (Exception e)
             {
-                Console.WriteLine("Ocurrio un error consultar los clientes. Vuelva a intentar en unos minutos.");
+                Console.WriteLine("Ocurrio un error al consultar los clientes. Vuelva a intentar en unos minutos.");
             }
 
             Console.WriteLine();
@@ -257,6 +259,12 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                         break;
                     }
 
+                    case 2: // Ver reporte de productos por proveedor
+                    {
+                        MostrarReporteProductoPorProveedor();
+                        break;
+                    }
+
                     default: // Opcion invalida
                     {
                         InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
@@ -264,6 +272,34 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                     }
                 }
             } while (opcionMenu != 0);
+        }
+
+        /// <summary>
+        /// Muestra en consola un reporte de todos los productos correspondientes al TP, clasificados en base al
+        /// proveedor que los provee.
+        /// </summary>
+        private static void MostrarReporteProductoPorProveedor()
+        {
+            try
+            {
+                List<Reporte<Producto, Proveedor>> reporteProductoPorProveedor = _reporteServicio.ObtenerReporteProductoPorProveedor();
+
+                if (reporteProductoPorProveedor == null || !reporteProductoPorProveedor.Any())
+                {
+                    InputHelper.PedirContinuacion("No hay datos para mostrar.");
+                    return;
+                }
+
+                Console.WriteLine("Reporte de Producto por Proveedor:\n");
+                foreach (Reporte<Producto, Proveedor> productoProveedor in reporteProductoPorProveedor) Console.WriteLine($"{productoProveedor}\n");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Ocurrio un error al emitir el reporte de producto por proveedor. Vuelva a intentar en unos minutos.");
+            }
+
+            Console.WriteLine();
+            InputHelper.PedirContinuacion();
         }
 
         private static void MostrarAcercaDe()

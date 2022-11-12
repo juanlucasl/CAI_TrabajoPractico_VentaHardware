@@ -42,6 +42,7 @@
         <Compile Include="ProductoServicio.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="ProveedorServicio.cs" />
+        <Compile Include="ReporteServicio.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\TrabajoPracticoVentaHardware.AccesoDatos\TrabajoPracticoVentaHardware.AccesoDatos.csproj">
