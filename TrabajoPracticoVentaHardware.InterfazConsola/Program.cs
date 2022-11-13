@@ -9,10 +9,12 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
     static class Program
     {
         private static ClienteServicio _clienteServicio;
+        private static ReporteServicio _reporteServicio;
 
         static void Main(string[] args)
         {
             _clienteServicio = new ClienteServicio();
+            _reporteServicio = new ReporteServicio();
 
             int opcionMenu;
 
@@ -24,34 +26,40 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 switch (opcionMenu)
                 {
                     case 1: // Submenu de clientes
-                        {
-                            MenuClientes();
-                            break;
-                        }
+                    {
+                        MenuClientes();
+                        break;
+                    }
 
                     case 2: // Submenu de productos
-                        {
-                            MenuProductos();
-                            break;
-                        }
+                    {
+                        MenuProductos();
+                        break;
+                    }
+
+                    case 5: // Submenu de reportes
+                    {
+                        MenuReportes();
+                        break;
+                    }
 
                     case 9: // Acerca de
-                        {
-                            MostrarAcercaDe();
-                            break;
-                        }
+                    {
+                        MostrarAcercaDe();
+                        break;
+                    }
 
                     case 0: // Salir del programa
-                        {
-                            Console.WriteLine("Salir del programa");
-                            break;
-                        }
+                    {
+                        Console.WriteLine("Salir del programa");
+                        break;
+                    }
 
                     default: // Opcion invalida
-                        {
-                            InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
-                            break;
-                        }
+                    {
+                        InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
+                        break;
+                    }
                 }
             } while (opcionMenu != 0);
         }
@@ -112,7 +120,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             }
             catch (Exception e)
             {
-                Console.WriteLine("Ocurrio un error consultar los clientes. Vuelva a intentar en unos minutos.");
+                Console.WriteLine("Ocurrio un error al consultar los clientes. Vuelva a intentar en unos minutos.");
             }
 
             Console.WriteLine();
@@ -185,8 +193,6 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             } while (opcionMenu != 0);
         }
 
-
-
         private static void MostrarProductos()
         {
             try
@@ -211,8 +217,6 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             InputHelper.PedirContinuacion();
         }
 
-
-
         private static void AltaProducto()
         {
             Console.WriteLine("(Ingresar 'c' para cancelar)");
@@ -222,7 +226,6 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 int idCategoria = (int)InputHelper.PedirNumeroEntero("Ingresar codigo de categoría");
                 double precio = InputHelper.PedirNumeroEntero("Ingresar precio del producto:");
                 int stock = (int)InputHelper.PedirNumeroEntero("Ingresar unidades de producto");
-                    
 
                 Producto producto = new Producto(idCategoria, nombre, precio, stock);
 
@@ -237,6 +240,66 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             {
                 InputHelper.PedirContinuacion($"Ocurrio un error al dar de alta al producto: {e.Message}");
             }
+        }
+
+        /// <summary>Muestra el menu de reportes.</summary>
+        private static void MenuReportes()
+        {
+            int opcionMenu;
+
+            do
+            {
+                MenuHelper.MostrarMenu(MenuHelper.OpcionesMenuReporte);
+                opcionMenu = InputHelper.PedirOpcionMenu();
+
+                switch (opcionMenu)
+                {
+                    case 0: // Volver al Menu principal.
+                    {
+                        break;
+                    }
+
+                    case 2: // Ver reporte de productos por proveedor
+                    {
+                        MostrarReporteProductoPorProveedor();
+                        break;
+                    }
+
+                    default: // Opcion invalida
+                    {
+                        InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
+                        break;
+                    }
+                }
+            } while (opcionMenu != 0);
+        }
+
+        /// <summary>
+        /// Muestra en consola un reporte de todos los productos correspondientes al TP, clasificados en base al
+        /// proveedor que los provee.
+        /// </summary>
+        private static void MostrarReporteProductoPorProveedor()
+        {
+            try
+            {
+                List<Reporte<Producto, Proveedor>> reporteProductoPorProveedor = _reporteServicio.ObtenerReporteProductoPorProveedor();
+
+                if (reporteProductoPorProveedor == null || !reporteProductoPorProveedor.Any())
+                {
+                    InputHelper.PedirContinuacion("No hay datos para mostrar.");
+                    return;
+                }
+
+                Console.WriteLine("Reporte de Producto por Proveedor:\n");
+                foreach (Reporte<Producto, Proveedor> productoProveedor in reporteProductoPorProveedor) Console.WriteLine($"{productoProveedor}\n");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Ocurrio un error al emitir el reporte de producto por proveedor. Vuelva a intentar en unos minutos.");
+            }
+
+            Console.WriteLine();
+            InputHelper.PedirContinuacion();
         }
 
         private static void MostrarAcercaDe()
