@@ -24,34 +24,34 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 switch (opcionMenu)
                 {
                     case 1: // Submenu de clientes
-                    {
-                        MenuClientes();
-                        break;
-                    }
+                        {
+                            MenuClientes();
+                            break;
+                        }
 
                     case 2: // Submenu de productos
-                    {
-                        MenuProductos();
-                        break;
-                    }
+                        {
+                            MenuProductos();
+                            break;
+                        }
 
                     case 9: // Acerca de
-                    {
-                        MostrarAcercaDe();
-                        break;
-                    }
+                        {
+                            MostrarAcercaDe();
+                            break;
+                        }
 
                     case 0: // Salir del programa
-                    {
-                        Console.WriteLine("Salir del programa");
-                        break;
-                    }
+                        {
+                            Console.WriteLine("Salir del programa");
+                            break;
+                        }
 
                     default: // Opcion invalida
-                    {
-                        InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
-                        break;
-                    }
+                        {
+                            InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
+                            break;
+                        }
                 }
             } while (opcionMenu != 0);
         }
@@ -69,27 +69,27 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 switch (opcionMenu)
                 {
                     case 1: // Consultar clientes
-                    {
-                        MostrarClientes();
-                        break;
-                    }
+                        {
+                            MostrarClientes();
+                            break;
+                        }
 
                     case 2: // Alta de cliente
-                    {
-                        AltaCliente();
-                        break;
-                    }
+                        {
+                            AltaCliente();
+                            break;
+                        }
 
                     case 0: // Volver al Menu principal.
-                    {
-                        break;
-                    }
+                        {
+                            break;
+                        }
 
                     default: // Opcion invalida
-                    {
-                        InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
-                        break;
-                    }
+                        {
+                            InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
+                            break;
+                        }
                 }
             } while (opcionMenu != 0);
         }
@@ -138,7 +138,8 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 _clienteServicio.InsertarCliente(cliente);
                 InputHelper.PedirContinuacion($"Cliente {cliente.Nombre} ingresado con exito");
             }
-            catch (OperationCanceledException operationCanceledException) {
+            catch (OperationCanceledException operationCanceledException)
+            {
                 InputHelper.PedirContinuacion(operationCanceledException.Message);
             }
             catch (Exception e)
@@ -159,18 +160,83 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
 
                 switch (opcionMenu)
                 {
+                    case 1: // Consultar Productos
+                        {
+                            MostrarProductos();
+                            break;
+                        }
+
+                    case 2: // Ingresar nuevo producto
+                        {
+                            AltaProducto();
+                            break;
+                        }
                     case 0: // Volver al Menu principal.
-                    {
-                        break;
-                    }
+                        {
+                            break;
+                        }
 
                     default: // Opcion invalida
-                    {
-                        InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
-                        break;
-                    }
+                        {
+                            InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
+                            break;
+                        }
                 }
             } while (opcionMenu != 0);
+        }
+
+
+
+        private static void MostrarProductos()
+        {
+            try
+            {
+                List<Producto> productos = _clienteServicio.ObtenerClientes();
+
+                if (productos == null || !productos.Any())
+                {
+                    InputHelper.PedirContinuacion("No hay productos disponibles.");
+                    return;
+                }
+
+                Console.WriteLine("Listado de productos:\n");
+                foreach (Producto producto in productos) Console.WriteLine($"{producto}\n");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Ocurrio un error consultar los productos. Vuelva a intentar en unos minutos.");
+            }
+
+            Console.WriteLine();
+            InputHelper.PedirContinuacion();
+        }
+
+
+
+        private static void AltaProducto()
+        {
+            Console.WriteLine("(Ingresar 'c' para cancelar)");
+            try
+            {
+                string nombre = InputHelper.PedirString("Ingresar nombre del producto:", true);
+                int idCategoria = (int)InputHelper.PedirNumeroEntero("Ingresar codigo de categoría");
+                double precio = InputHelper.PedirNumeroEntero("Ingresar precio del producto:");
+                int stock = (int)InputHelper.PedirNumeroEntero("Ingresar unidades de producto");
+                    
+
+                Producto producto = new Producto(idCategoria, nombre, precio, stock);
+
+                //  _clienteServicio.InsertarCliente(cliente);  Crear insert de Producto
+                InputHelper.PedirContinuacion($"Producto {producto.Nombre} ($ {producto.Precio}) ingresado con exito");
+            }
+            catch (OperationCanceledException operationCanceledException)
+            {
+                InputHelper.PedirContinuacion(operationCanceledException.Message);
+            }
+            catch (Exception e)
+            {
+                InputHelper.PedirContinuacion($"Ocurrio un error al dar de alta al producto: {e.Message}");
+            }
         }
 
         private static void MostrarAcercaDe()
