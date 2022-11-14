@@ -7,7 +7,7 @@ namespace TrabajoPracticoVentaHardware.Entidades
         // Constructor
         public Producto() {}
 
-        public Producto(int idCategoria, string nombre, double precio, int stock)
+        public Producto(Categoria idCategoria, string nombre, double precio, int stock)
         {
             _idCategoria = idCategoria;
             _nombre = nombre ?? throw new ArgumentNullException(nameof(nombre));
@@ -18,7 +18,7 @@ namespace TrabajoPracticoVentaHardware.Entidades
 
         // Atributos
         private int _id;
-        private int _idCategoria;
+        private Categoria _idCategoria;
         private string _nombre;
         private DateTime _fechaAlta;
         private double _precio;
@@ -31,7 +31,7 @@ namespace TrabajoPracticoVentaHardware.Entidades
             set { _id = value; }
         }
 
-        public int IdCategoria
+        public Categoria IdCategoria
         {
             get { return _idCategoria; }
             set { _idCategoria = value; }

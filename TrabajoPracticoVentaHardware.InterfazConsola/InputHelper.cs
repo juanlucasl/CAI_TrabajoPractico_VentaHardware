@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using TrabajoPracticoVentaHardware.Entidades;
 
 namespace TrabajoPracticoVentaHardware.InterfazConsola
 {
@@ -48,9 +50,50 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             const long rangoMaximo = 999999999999999;
             const long rangoMinimo = 1000;
 
-            long numeroTelefonico = PedirNumeroEntero(mensaje, rangoMinimo, rangoMaximo);
+            long numeroTelefonico = PedirNumeroEntero(mensaje, rangoMinimo, rangoMaximo, obligatorio);
 
             return numeroTelefonico;
+        }
+
+        /// <summary>
+        /// Solicita al usuario que ingrese un codigo de Categoria. Una vez que el usuario ingreso lo pedido, devuelve
+        /// el valor. Opcionalmente recibe un mensaje para mostrar al usuario.
+        /// </summary>
+        /// <param name="mensaje">
+        /// Mensaje para mostrarle al usuario antes de que ingrese el numero (default "Ingresar un codigo de
+        /// categoria:")
+        /// </param>
+        /// <param name="obligatorio">Flag que indica si se debe rechazar al numero ingresado si es cero.</param>
+        /// <returns>El numero que ingreso el usuario</returns>
+        internal static Categoria PedirCategoria(
+            string mensaje = "Ingresar codigo de categoria:",
+            bool obligatorio = false
+        )
+        {
+            Categoria categoria = (Categoria)PedirNumeroNatural(mensaje, max: ObtenerIndiceEnumMasAlto(typeof(Categoria)), obligatorio: obligatorio);
+            return categoria;
+        }
+
+        /// <summary>
+        /// Solicita al usuario que ingrese un numero natural. Una vez que el usuario ingreso lo pedido, devuelve el
+        /// valor. Opcionalmente recibe un mensaje para mostrar al usuario, un numero minimo y un numero maximo.
+        /// </summary>
+        /// <param name="mensaje">
+        /// Mensaje para mostrarle al usuario antes de que ingrese el numero (default "Ingresar un numero:")
+        /// </param>
+        /// <param name="min">Valor minimo para el numero que el usuario puede ingresar.</param>
+        /// <param name="max">Valor maximo para el numero que el usuario puede ingresar.</param>
+        /// <param name="obligatorio">Flag que indica si se debe rechazar al numero ingresado si es cero.</param>
+        /// <returns>El numero que ingreso el usuario</returns>
+        internal static int PedirNumeroNatural(
+            string mensaje = "Ingresar un numero:",
+            int min = 0,
+            int max = int.MaxValue,
+            bool obligatorio = false
+        )
+        {
+            int numeroEntero = (int)PedirNumeroEntero(mensaje, min, max, obligatorio);
+            return numeroEntero;
         }
 
         /// <summary>
@@ -149,6 +192,13 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             Console.ReadKey();
         }
 
+        /// <summary>Devuelve el valor mas alto posible de un enum.</summary>
+        /// <param name="enumEvaluado">Enum a evaluar.</param>
+        /// <returns>Valor mas alto posible del enum evaluado.</returns>
+        internal static int ObtenerIndiceEnumMasAlto(Type enumEvaluado)
+        {
+            return Enum.GetValues(enumEvaluado).Cast<int>().Max();
+        }
 
         /// <summary>Recibe un string y, si es igual a "c", lanza una OperationCanceledException.</summary>
         /// <param name="input">String a comparar.</param>

@@ -9,11 +9,13 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
     static class Program
     {
         private static ClienteServicio _clienteServicio;
+        private static ProductoServicio _productoServicio;
         private static ReporteServicio _reporteServicio;
 
         static void Main(string[] args)
         {
             _clienteServicio = new ClienteServicio();
+            _productoServicio = new ProductoServicio();
             _reporteServicio = new ReporteServicio();
 
             int opcionMenu;
@@ -193,11 +195,12 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             } while (opcionMenu != 0);
         }
 
+        /// <summary>Muestra en consola un listado de todos los producto correspondientes al TP.</summary>
         private static void MostrarProductos()
         {
             try
             {
-                List<Producto> productos = _clienteServicio.ObtenerClientes();
+                List<Producto> productos = _productoServicio.ObtenerProductos();
 
                 if (productos == null || !productos.Any())
                 {
@@ -217,20 +220,23 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             InputHelper.PedirContinuacion();
         }
 
+        /// <summary>
+        /// Solicita informacion para dar de alta a un nuevo producto y envia la peticion de alta al servicio.
+        /// </summary>
         private static void AltaProducto()
         {
             Console.WriteLine("(Ingresar 'c' para cancelar)");
             try
             {
                 string nombre = InputHelper.PedirString("Ingresar nombre del producto:", true);
-                int idCategoria = (int)InputHelper.PedirNumeroEntero("Ingresar codigo de categoría");
-                double precio = InputHelper.PedirNumeroEntero("Ingresar precio del producto:");
-                int stock = (int)InputHelper.PedirNumeroEntero("Ingresar unidades de producto");
+                Categoria idCategoria = InputHelper.PedirCategoria();
+                double precio = InputHelper.PedirNumeroReal("Ingresar precio del producto (se redondeara a dos decimales):");
+                int stock = InputHelper.PedirNumeroNatural("Ingresar unidades de producto");
 
                 Producto producto = new Producto(idCategoria, nombre, precio, stock);
 
-                //  _clienteServicio.InsertarCliente(cliente);  Crear insert de Producto
-                InputHelper.PedirContinuacion($"Producto {producto.Nombre} ($ {producto.Precio}) ingresado con exito");
+                _productoServicio.InsertarProducto(producto);
+                InputHelper.PedirContinuacion($"Producto {producto.Nombre} ({producto.IdCategoria.ToString()}) ingresado con exito");
             }
             catch (OperationCanceledException operationCanceledException)
             {

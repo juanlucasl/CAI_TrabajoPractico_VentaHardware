@@ -2,7 +2,8 @@ namespace TrabajoPracticoVentaHardware.Entidades
 {
     public enum Categoria
     {
-        Microprocesadores = 1,
+        Ninguna,
+        Microprocesadores,
         Motherboards,
         Perifericos,
         Gabinetes,
