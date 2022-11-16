@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TrabajoPracticoVentaHardware.AccesoDatos;
 using TrabajoPracticoVentaHardware.Entidades;
+using TrabajoPracticoVentaHardware.Entidades.Excepciones;
 
 namespace TrabajoPracticoVentaHardware.Servicio
 {
@@ -32,7 +33,7 @@ namespace TrabajoPracticoVentaHardware.Servicio
         {
             ResultadoTransaccion resultadoTransaccion = _clienteDatos.InsertarCliente(cliente);
 
-            if (!resultadoTransaccion.IsOk) throw new Exception(resultadoTransaccion.Error);
+            if (!resultadoTransaccion.IsOk) throw new TransaccionFallidaException(resultadoTransaccion.Error);
 
             return resultadoTransaccion.Id;
         }
