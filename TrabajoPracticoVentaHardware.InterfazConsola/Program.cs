@@ -11,12 +11,14 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
     {
         private static ClienteServicio _clienteServicio;
         private static ProductoServicio _productoServicio;
+        private static ProveedorServicio _proveedorServicio;
         private static ReporteServicio _reporteServicio;
 
         static void Main(string[] args)
         {
             _clienteServicio = new ClienteServicio();
             _productoServicio = new ProductoServicio();
+            _proveedorServicio = new ProveedorServicio();
             _reporteServicio = new ReporteServicio();
 
             int opcionMenu;
@@ -37,6 +39,12 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                     case 2: // Submenu de productos
                     {
                         MenuProductos();
+                        break;
+                    }
+
+                    case 4: // Submenu de proveedores
+                    {
+                        MenuProveedores();
                         break;
                     }
 
@@ -80,27 +88,27 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 switch (opcionMenu)
                 {
                     case 1: // Consultar clientes
-                        {
-                            MostrarClientes();
-                            break;
-                        }
+                    {
+                        MostrarClientes();
+                        break;
+                    }
 
                     case 2: // Alta de cliente
-                        {
-                            AltaCliente();
-                            break;
-                        }
+                    {
+                        AltaCliente();
+                        break;
+                    }
 
                     case 0: // Volver al Menu principal.
-                        {
-                            break;
-                        }
+                    {
+                        break;
+                    }
 
                     default: // Opcion invalida
-                        {
-                            InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
-                            break;
-                        }
+                    {
+                        InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
+                        break;
+                    }
                 }
             } while (opcionMenu != 0);
         }
@@ -172,31 +180,31 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 switch (opcionMenu)
                 {
                     case 1: // Consultar Productos
-                        {
-                            MostrarProductos();
-                            break;
-                        }
+                    {
+                        MostrarProductos();
+                        break;
+                    }
 
                     case 2: // Ingresar nuevo producto
-                        {
-                            AltaProducto();
-                            break;
-                        }
+                    {
+                        AltaProducto();
+                        break;
+                    }
                     case 0: // Volver al Menu principal.
-                        {
-                            break;
-                        }
+                    {
+                        break;
+                    }
 
                     default: // Opcion invalida
-                        {
-                            InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
-                            break;
-                        }
+                    {
+                        InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
+                        break;
+                    }
                 }
             } while (opcionMenu != 0);
         }
 
-        /// <summary>Muestra en consola un listado de todos los producto correspondientes al TP.</summary>
+        /// <summary>Muestra en consola un listado de todos los productos correspondientes al TP.</summary>
         private static void MostrarProductos()
         {
             try
@@ -246,6 +254,100 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             catch (Exception e)
             {
                 InputHelper.PedirContinuacion($"Ocurrio un error al dar de alta al producto: {e.Message}");
+            }
+        }
+
+        /// <summary>Muestra el menu de proveedores.</summary>
+        private static void MenuProveedores()
+        {
+            int opcionMenu;
+
+            do
+            {
+                MenuHelper.MostrarMenu(MenuHelper.OpcionesMenuProveedor);
+                opcionMenu = InputHelper.PedirOpcionMenu();
+
+                switch (opcionMenu)
+                {
+                    case 1: // Consultar Proveedores
+                    {
+                        MostrarProveedores();
+                        break;
+                    }
+
+                    case 2: // Alta de Proveedor
+                    {
+                        AltaProveedor();
+                        break;
+                    }
+
+                    case 0: // Volver al Menu principal.
+                    {
+                        break;
+                    }
+
+                    default: // Opcion invalida
+                    {
+                        InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
+                        break;
+                    }
+                }
+            } while (opcionMenu != 0);
+        }
+
+        /// <summary>Muestra en consola un listado de todos los proveedores correspondientes al TP.</summary>
+        private static void MostrarProveedores()
+        {
+            try
+            {
+                List<Proveedor> proveedores = _proveedorServicio.ObtenerProveedores();
+
+                if (proveedores == null || !proveedores.Any())
+                {
+                    InputHelper.PedirContinuacion("No hay proveedores disponibles.");
+                    return;
+                }
+
+                Console.WriteLine("Listado de proveedores:\n");
+                foreach (Proveedor proveedor in proveedores) Console.WriteLine($"{proveedor}\n");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Ocurrio un error consultar los proveedores. Vuelva a intentar en unos minutos.");
+            }
+
+            Console.WriteLine();
+            InputHelper.PedirContinuacion();
+        }
+
+        /// <summary>
+        /// Solicita informacion para dar de alta a un nuevo proveedor y envia la peticion de alta al servicio.
+        /// </summary>
+        private static void AltaProveedor()
+        {
+            Console.WriteLine("(Ingresar 'c' para cancelar)");
+            try
+            {
+                string nombre = InputHelper.PedirString("Ingresar nombre del proveedor:", true);
+                int idProducto = InputHelper.PedirNumeroNatural("Insertar ID del producto que provee el proveedor:");
+                _productoServicio.ObtenerProductoPorId(idProducto);
+
+                Proveedor proveedor = new Proveedor(idProducto, nombre);
+
+                _proveedorServicio.InsertarProveedor(proveedor);
+                InputHelper.PedirContinuacion($"Proveedor {proveedor.Nombre} ingresado con exito");
+            }
+            catch (AccionCanceladaException accionCanceladaException)
+            {
+                InputHelper.PedirContinuacion(accionCanceladaException.Message);
+            }
+            catch (InvalidOperationException)
+            {
+                InputHelper.PedirContinuacion("No existe un producto con el id indicado.");
+            }
+            catch (Exception e)
+            {
+                InputHelper.PedirContinuacion($"Ocurrio un error al dar de alta al proveedor: {e.Message}");
             }
         }
 

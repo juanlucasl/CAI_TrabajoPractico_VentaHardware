@@ -33,7 +33,7 @@ namespace TrabajoPracticoVentaHardware.Servicio
             foreach (Producto producto in productos)
             {
                 Proveedor proveedorProducto = proveedores.Find(proveedor => proveedor.IdProducto == producto.Id);
-                reporteProductoPorProveedor.Add(new Reporte<Producto, Proveedor>(producto, proveedorProducto));
+                reporteProductoPorProveedor.Add(new ReporteProductoProveedor(producto, proveedorProducto));
             }
 
             return reporteProductoPorProveedor;

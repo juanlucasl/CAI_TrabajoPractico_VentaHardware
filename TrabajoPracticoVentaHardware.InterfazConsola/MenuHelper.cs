@@ -10,6 +10,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             $"{ConfigurationManager.AppSettings["TP_NOMBRE"]}\n",
             "1) Menu de clientes",
             "2) Menu de productos",
+            "4) Menu de proveedores",
             "5) Menu de reportes",
             "9) Acerca de",
             "0) Salir del programa"
@@ -44,6 +45,8 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
         {
             ConfigurationManager.AppSettings["TP_NOMBRE"],
             "Menu de proveedores\n",
+            "1) Consultar proveedores",
+            "2) Alta de proveedor",
             "0) Salir del menu de proveedores"
         };
 
