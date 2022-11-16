@@ -40,6 +40,7 @@
     <ItemGroup>
         <Compile Include="Categoria.cs" />
         <Compile Include="Cliente.cs" />
+        <Compile Include="Excepciones\AccionCanceladaException.cs" />
         <Compile Include="Persona.cs" />
         <Compile Include="Producto.cs" />
         <Compile Include="Reporte.cs" />

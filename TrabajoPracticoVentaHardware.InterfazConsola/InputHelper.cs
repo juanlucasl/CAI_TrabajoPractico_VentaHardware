@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using TrabajoPracticoVentaHardware.Entidades;
+using TrabajoPracticoVentaHardware.Entidades.Excepciones;
 
 namespace TrabajoPracticoVentaHardware.InterfazConsola
 {
@@ -200,12 +201,12 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             return Enum.GetValues(enumEvaluado).Cast<int>().Max();
         }
 
-        /// <summary>Recibe un string y, si es igual a "c", lanza una OperationCanceledException.</summary>
+        /// <summary>Recibe un string y, si es igual a "c", lanza una AccionCanceladaException.</summary>
         /// <param name="input">String a comparar.</param>
-        /// <exception cref="OperationCanceledException">Si el string que se recibio es igual a "c".</exception>
+        /// <exception cref="AccionCanceladaException">Si el string que se recibio es igual a "c".</exception>
         private static void CancelarSiEsC(string input)
         {
-            if (input == "c") throw new OperationCanceledException("Accion cancelada.");
+            if (input == "c") throw new AccionCanceladaException();
         }
     }
 }

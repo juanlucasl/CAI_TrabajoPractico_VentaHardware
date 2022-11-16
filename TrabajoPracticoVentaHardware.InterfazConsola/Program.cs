@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TrabajoPracticoVentaHardware.Entidades;
+using TrabajoPracticoVentaHardware.Entidades.Excepciones;
 using TrabajoPracticoVentaHardware.Servicio;
 
 namespace TrabajoPracticoVentaHardware.InterfazConsola
@@ -148,7 +149,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 _clienteServicio.InsertarCliente(cliente);
                 InputHelper.PedirContinuacion($"Cliente {cliente.Nombre} ingresado con exito");
             }
-            catch (OperationCanceledException operationCanceledException)
+            catch (AccionCanceladaException operationCanceledException)
             {
                 InputHelper.PedirContinuacion(operationCanceledException.Message);
             }
@@ -238,7 +239,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 _productoServicio.InsertarProducto(producto);
                 InputHelper.PedirContinuacion($"Producto {producto.Nombre} ({producto.IdCategoria.ToString()}) ingresado con exito");
             }
-            catch (OperationCanceledException operationCanceledException)
+            catch (AccionCanceladaException operationCanceledException)
             {
                 InputHelper.PedirContinuacion(operationCanceledException.Message);
             }
