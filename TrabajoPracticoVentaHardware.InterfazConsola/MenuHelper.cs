@@ -46,6 +46,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             ConfigurationManager.AppSettings["TP_NOMBRE"],
             "Menu de proveedores\n",
             "1) Consultar proveedores",
+            "2) Alta de proveedor",
             "0) Salir del menu de proveedores"
         };
 

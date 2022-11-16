@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TrabajoPracticoVentaHardware.AccesoDatos;
 using TrabajoPracticoVentaHardware.Entidades;
+using TrabajoPracticoVentaHardware.Entidades.Excepciones;
 
 namespace TrabajoPracticoVentaHardware.Servicio
 {
@@ -20,6 +21,18 @@ namespace TrabajoPracticoVentaHardware.Servicio
         public List<Proveedor> ObtenerProveedores()
         {
             return _proveedorDatos.ObtenerTodos();
+        }
+
+        /// <summary>Recibe un proveedor para almacenar en el sistema.</summary>
+        /// <param name="proveedor">Proveedor a almacenar.</param>
+        /// <returns>Resultado de la transaccion.</returns>
+        public int InsertarProveedor(Proveedor proveedor)
+        {
+            ResultadoTransaccion resultadoTransaccion = _proveedorDatos.InsertarProveedor(proveedor);
+
+            if (!resultadoTransaccion.IsOk) throw new TransaccionFallidaException(resultadoTransaccion.Error);
+
+            return resultadoTransaccion.Id;
         }
     }
 }

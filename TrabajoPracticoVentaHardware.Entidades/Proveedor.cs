@@ -57,7 +57,8 @@ namespace TrabajoPracticoVentaHardware.Entidades
         // Metodos
         public override string ToString()
         {
-            return $"{_id}) {_nombre}";
+            return $"{_id}) {_nombre}\n" +
+                   $"Producto que provee: {_idProducto})";
         }
     }
 }
