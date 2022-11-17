@@ -12,6 +12,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
     {
         private static ClienteServicio _clienteServicio;
         private static ProductoServicio _productoServicio;
+        private static VentaServicio _ventasServicio;
         private static ProveedorServicio _proveedorServicio;
         private static ReporteServicio _reporteServicio;
 
@@ -19,6 +20,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
         {
             _clienteServicio = new ClienteServicio();
             _productoServicio = new ProductoServicio();
+            _ventasServicio = new VentaServicio();
             _proveedorServicio = new ProveedorServicio();
             _reporteServicio = new ReporteServicio();
 
@@ -40,6 +42,12 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                     case 2: // Submenu de productos
                     {
                         MenuProductos();
+                        break;
+                    }
+
+                    case 3: // Submenu de ventas
+                    {
+                        MenuVentas();
                         break;
                     }
 
@@ -262,6 +270,63 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             {
                 InputHelper.PedirContinuacion($"Ocurrio un error al dar de alta al producto: {e.Message}");
             }
+        }
+
+        /// <summary>Muestra el menu de ventas.</summary>
+        private static void MenuVentas()
+        {
+            int opcionMenu;
+
+            do
+            {
+                MenuHelper.MostrarMenu(MenuHelper.OpcionesMenuVenta);
+                opcionMenu = InputHelper.PedirOpcionMenu();
+
+                switch (opcionMenu)
+                {
+                    case 1: // Consultar Ventas
+                    {
+                        MostrarVentas();
+                        break;
+                    }
+
+                    case 0: // Volver al Menu principal.
+                    {
+                        break;
+                    }
+
+                    default: // Opcion invalida
+                    {
+                        InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
+                        break;
+                    }
+                }
+            } while (opcionMenu != 0);
+        }
+
+        /// <summary>Muestra en consola un listado de todas las ventas correspondientes al TP.</summary>
+        private static void MostrarVentas()
+        {
+            try
+            {
+                List<Venta> ventas = _ventasServicio.ObtenerVentas();
+
+                if (ventas == null || !ventas.Any())
+                {
+                    InputHelper.PedirContinuacion("No hay ventas disponibles.");
+                    return;
+                }
+
+                Console.WriteLine("Listado de ventas:\n");
+                foreach (Venta venta in ventas) Console.WriteLine($"{venta}\n");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Ocurrio un error consultar las ventas. Vuelva a intentar en unos minutos.");
+            }
+
+            Console.WriteLine();
+            InputHelper.PedirContinuacion();
         }
 
         /// <summary>Muestra el menu de proveedores.</summary>

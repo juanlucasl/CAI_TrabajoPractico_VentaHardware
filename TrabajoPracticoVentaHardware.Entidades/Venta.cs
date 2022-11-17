@@ -56,7 +56,7 @@ namespace TrabajoPracticoVentaHardware.Entidades
         // Metodos
         public override string ToString()
         {
-            return $"Id: {Id})" +
+            return $"Id: {Id})\n" +
                    $"Cliente: {IdCliente})\n" +
                    $"Producto: {IdProducto})\n" +
                    $"Cantidad Vendida: {Cantidad}\n" +
