@@ -18,6 +18,8 @@ namespace TrabajoPracticoVentaHardware.Servicio
         // Atributos
         private readonly ProductoDatos _productoDatos;
 
+        // Metodos
+
         /// <summary>Devuelve una coleccion con todos los productos correspondientes al TP.</summary>
         /// <returns>Coleccion con todos los productos correspondientes al TP.</returns>
         public List<Producto> ObtenerProductos()

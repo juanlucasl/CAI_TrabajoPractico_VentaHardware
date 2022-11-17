@@ -52,5 +52,15 @@ namespace TrabajoPracticoVentaHardware.Entidades
             get { return _fechaAlta; }
             set { _fechaAlta = value; }
         }
+
+        // Metodos
+        public override string ToString()
+        {
+            return $"Id: {Id})" +
+                   $"Cliente: {IdCliente})\n" +
+                   $"Producto: {IdProducto})\n" +
+                   $"Cantidad Vendida: {Cantidad}\n" +
+                   $"Fecha: {FechaAlta}";
+        }
     }
 }

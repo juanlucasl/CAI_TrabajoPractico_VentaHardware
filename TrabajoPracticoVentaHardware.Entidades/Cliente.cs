@@ -31,15 +31,22 @@ namespace TrabajoPracticoVentaHardware.Entidades
             set { _activo = value; }
         }
 
+        public string NombreCompleto
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(Apellido) ? Nombre : $"{Apellido}, {Nombre}";
+            }
+        }
+
         // Metodos
         public override string ToString()
         {
-            string apellido = string.IsNullOrWhiteSpace(Apellido) ? "" : $"{Apellido}, ";
-
-            return $"{Id}) {apellido}{Nombre}\n" +
+            return $"{Id}) {NombreCompleto}\n" +
                    $"Telefono: {PropiedadDisplay(Telefono.ToString())}\n" +
                    $"Email: {PropiedadDisplay(Email)}\n" +
-                   $"Direccion: {PropiedadDisplay(Direccion)}";
+                   $"Direccion: {PropiedadDisplay(Direccion)}\n" +
+                   $"Activo: {(Activo ? "Si" : "No")}";
         }
 
         /// <summary>Devuelve "N/A" si un string es vacio, null o "0". De lo contrario devuelve el string.</summary>

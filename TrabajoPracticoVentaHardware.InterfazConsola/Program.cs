@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using TrabajoPracticoVentaHardware.Entidades;
 using TrabajoPracticoVentaHardware.Entidades.Excepciones;
@@ -155,7 +156,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 Cliente cliente = new Cliente(nombre, apellido, direccion, telefono, mail);
 
                 _clienteServicio.InsertarCliente(cliente);
-                InputHelper.PedirContinuacion($"Cliente {cliente.Nombre} ingresado con exito");
+                InputHelper.PedirContinuacion($"Cliente {cliente.NombreCompleto} ingresado con exito");
             }
             catch (AccionCanceladaException operationCanceledException)
             {
@@ -239,8 +240,14 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             {
                 string nombre = InputHelper.PedirString("Ingresar nombre del producto:", true);
                 Categoria idCategoria = InputHelper.PedirCategoria();
-                double precio = InputHelper.PedirNumeroReal("Ingresar precio del producto (se redondeara a dos decimales):");
-                int stock = InputHelper.PedirNumeroNatural("Ingresar unidades de producto");
+                double precio = InputHelper.PedirNumeroReal(
+                    "Ingresar precio del producto (se redondeara a dos decimales):",
+                    max: double.Parse(ConfigurationManager.AppSettings["PRODUCTO_PRECIO_MAXIMO"])
+                );
+                int stock = InputHelper.PedirNumeroNatural(
+                    "Ingresar stock del producto",
+                    max: int.Parse(ConfigurationManager.AppSettings["PRODUCTO_PRECIO_MAXIMO"])
+                );
 
                 Producto producto = new Producto(idCategoria, nombre, precio, stock);
 
@@ -368,7 +375,13 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                         break;
                     }
 
-                    case 2: // Ver reporte de productos por proveedor
+                    case 1: // Ver reporte de ventas por cliente
+                    {
+                        MostrarReporteVentasPorCliente();
+                        break;
+                    }
+
+                    case 2: // Ver reporte de producto por proveedor
                     {
                         MostrarReporteProductoPorProveedor();
                         break;
@@ -384,6 +397,35 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
         }
 
         /// <summary>
+        /// Muestra en consola un reporte de todas las ventas correspondientes al TP, clasificadas en base al cliente
+        /// que las realizo.
+        /// </summary>
+        private static void MostrarReporteVentasPorCliente()
+        {
+            try
+            {
+                List<ReporteVentasCliente> reporteVentasPorCliente = _reporteServicio.ObtenerReporteVentasPorCliente();
+
+                if (reporteVentasPorCliente == null || !reporteVentasPorCliente.Any())
+                {
+                    InputHelper.PedirContinuacion("No hay datos para mostrar.");
+                    return;
+                }
+
+                Console.WriteLine("Reporte de Ventas por cliente:\n");
+                foreach (ReporteVentasCliente ventasCliente in reporteVentasPorCliente)
+                    Console.WriteLine($"{ventasCliente}\n");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Ocurrio un error al emitir el reporte de ventas por cliente. Vuelva a intentar en unos minutos.");
+            }
+
+            Console.WriteLine();
+            InputHelper.PedirContinuacion();
+        }
+
+        /// <summary>
         /// Muestra en consola un reporte de todos los productos correspondientes al TP, clasificados en base al
         /// proveedor que los provee.
         /// </summary>
@@ -391,7 +433,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
         {
             try
             {
-                List<Reporte<Producto, Proveedor>> reporteProductoPorProveedor = _reporteServicio.ObtenerReporteProductoPorProveedor();
+                List<ReporteProductoProveedor> reporteProductoPorProveedor = _reporteServicio.ObtenerReporteProductoPorProveedor();
 
                 if (reporteProductoPorProveedor == null || !reporteProductoPorProveedor.Any())
                 {
@@ -400,7 +442,8 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 }
 
                 Console.WriteLine("Reporte de Producto por Proveedor:\n");
-                foreach (Reporte<Producto, Proveedor> productoProveedor in reporteProductoPorProveedor) Console.WriteLine($"{productoProveedor}\n");
+                foreach (ReporteProductoProveedor productoProveedor in reporteProductoPorProveedor)
+                    Console.WriteLine($"{productoProveedor}\n");
             }
             catch (Exception e)
             {
