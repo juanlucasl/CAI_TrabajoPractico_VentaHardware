@@ -54,7 +54,8 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
         {
             ConfigurationManager.AppSettings["TP_NOMBRE"],
             "Menu de reportes\n",
-            "2) Ver reporte de productos por proveedor",
+            "1) Ver reporte de ventas por cliente",
+            "2) Ver reporte de producto por proveedor",
             "0) Salir del menu de reportes"
         };
 

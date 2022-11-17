@@ -16,6 +16,8 @@ namespace TrabajoPracticoVentaHardware.Servicio
         // Atributos
         private readonly ProveedorDatos _proveedorDatos;
 
+        // Metodos
+
         /// <summary>Devuelve una coleccion con todos los proveedores correspondientes al TP.</summary>
         /// <returns>Coleccion con todos los proveedores correspondientes al TP.</returns>
         public List<Proveedor> ObtenerProveedores()

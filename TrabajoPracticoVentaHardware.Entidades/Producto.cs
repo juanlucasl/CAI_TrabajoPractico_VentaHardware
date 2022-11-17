@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace TrabajoPracticoVentaHardware.Entidades
 {
@@ -65,8 +66,8 @@ namespace TrabajoPracticoVentaHardware.Entidades
         public override string ToString()
         {
             return $"{_id}) {_nombre}\n" +
-                   $"Categoria: {(Categoria)_idCategoria}\n" +
-                   $"Precio: ${_precio}\n" +
+                   $"Categoria: {_idCategoria}\n" +
+                   $"Precio: {_precio.ToString("C", CultureInfo.GetCultureInfo("es-AR"))}\n" +
                    $"Stock: {_stock}";
         }
     }

@@ -11,7 +11,7 @@ namespace TrabajoPracticoVentaHardware.Entidades
             string grupo = Grupo == null
                 ? "Sin datos de Proveedor"
                 : $"Proveedor: {Grupo.Nombre}";
-            return $"{grupo}\nProducto {Item}";
+            return $"{grupo}\nProducto\n{Item}";
         }
     }
 }
