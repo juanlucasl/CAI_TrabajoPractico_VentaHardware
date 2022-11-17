@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TrabajoPracticoVentaHardware.AccesoDatos;
 using TrabajoPracticoVentaHardware.Entidades;
@@ -26,11 +25,29 @@ namespace TrabajoPracticoVentaHardware.Servicio
             return _clienteDatos.ObtenerTodos();
         }
 
+        /// <summary>
+        /// Recibe un string con un email y devuelve el Cliente correspondiente a ese email, o null si no existe el
+        /// Cliente.
+        /// </summary>
+        /// <param name="clienteEmail">Email de Cliente</param>
+        /// <returns>Cliente correspondiente al Email</returns>
+        public Cliente ObtenerClientePorEmail(string clienteEmail)
+        {
+            if (string.IsNullOrEmpty(clienteEmail)) return null;
+
+            List<Cliente> clientes = ObtenerClientes();
+            return clientes.Find(cliente => cliente.Email == clienteEmail);
+        }
+
         /// <summary>Recibe un cliente para almacenar en el sistema.</summary>
         /// <param name="cliente">Cliente a almacenar.</param>
         /// <returns>Resultado de la transaccion.</returns>
         public int InsertarCliente(Cliente cliente)
         {
+            Cliente clienteObtenidoPorMail = ObtenerClientePorEmail(cliente.Email);
+            if (clienteObtenidoPorMail != null)
+                throw new DatosIngresadosInvalidosException($"Ya existe un Cliente con email {cliente.Email}");
+
             ResultadoTransaccion resultadoTransaccion = _clienteDatos.InsertarCliente(cliente);
 
             if (!resultadoTransaccion.IsOk) throw new TransaccionFallidaException(resultadoTransaccion.Error);

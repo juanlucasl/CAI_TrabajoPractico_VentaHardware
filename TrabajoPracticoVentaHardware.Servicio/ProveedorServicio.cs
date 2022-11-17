@@ -11,10 +11,12 @@ namespace TrabajoPracticoVentaHardware.Servicio
         public ProveedorServicio()
         {
             _proveedorDatos = new ProveedorDatos();
+            _productoServicio = new ProductoServicio();
         }
 
         // Atributos
         private readonly ProveedorDatos _proveedorDatos;
+        private readonly ProductoServicio _productoServicio;
 
         // Metodos
 
@@ -30,6 +32,10 @@ namespace TrabajoPracticoVentaHardware.Servicio
         /// <returns>Resultado de la transaccion.</returns>
         public int InsertarProveedor(Proveedor proveedor)
         {
+            Producto productoProveedor = _productoServicio.ObtenerProductoPorId(proveedor.IdProducto);
+            if (productoProveedor == null)
+                throw new DatosIngresadosInvalidosException($"No existe un Producto con id {proveedor.IdProducto}");
+
             ResultadoTransaccion resultadoTransaccion = _proveedorDatos.InsertarProveedor(proveedor);
 
             if (!resultadoTransaccion.IsOk) throw new TransaccionFallidaException(resultadoTransaccion.Error);

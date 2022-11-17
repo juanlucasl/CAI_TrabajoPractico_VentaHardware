@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using TrabajoPracticoVentaHardware.AccesoDatos;
 using TrabajoPracticoVentaHardware.Entidades;
 using TrabajoPracticoVentaHardware.Entidades.Excepciones;
@@ -28,15 +27,16 @@ namespace TrabajoPracticoVentaHardware.Servicio
         }
 
         /// <summary>
-        /// Recibe un Id y devuelve el Producto correspondiente a ese Id. Si no existe el producto, tira
-        /// InvalidOperationException.
+        /// Recibe un Id y devuelve el Producto correspondiente a ese Id, o null si no existe el Producto.
         /// </summary>
         /// <param name="productoId">Id de Producto</param>
         /// <returns>Producto correspondiente al Id</returns>
         public Producto ObtenerProductoPorId(int productoId)
         {
+            if (productoId == 0) return null;
+
             List<Producto> productos = ObtenerProductos();
-            return productos.Single(producto => producto.Id == productoId);
+            return productos.Find(producto => producto.Id == productoId);
         }
 
         /// <summary>Recibe un producto para almacenar en el sistema.</summary>

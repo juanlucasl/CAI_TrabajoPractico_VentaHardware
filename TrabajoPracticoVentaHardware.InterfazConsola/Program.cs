@@ -151,9 +151,9 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 string apellido = InputHelper.PedirString("Ingresar apellido del cliente:");
                 string direccion = InputHelper.PedirString("Ingresar direccion del cliente:");
                 long telefono = InputHelper.PedirNumeroTelefonico();
-                string mail = InputHelper.PedirString("Ingresar email del cliente:");
+                string email = InputHelper.PedirString("Ingresar email del cliente:");
 
-                Cliente cliente = new Cliente(nombre, apellido, direccion, telefono, mail);
+                Cliente cliente = new Cliente(nombre, apellido, direccion, telefono, email);
 
                 _clienteServicio.InsertarCliente(cliente);
                 InputHelper.PedirContinuacion($"Cliente {cliente.NombreCompleto} ingresado con exito");
@@ -337,7 +337,6 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             {
                 string nombre = InputHelper.PedirString("Ingresar nombre del proveedor:", true);
                 int idProducto = InputHelper.PedirNumeroNatural("Insertar ID del producto que provee el proveedor:");
-                _productoServicio.ObtenerProductoPorId(idProducto);
 
                 Proveedor proveedor = new Proveedor(idProducto, nombre);
 
