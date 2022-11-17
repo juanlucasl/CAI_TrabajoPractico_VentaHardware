@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using TrabajoPracticoVentaHardware.AccesoDatos;
 using TrabajoPracticoVentaHardware.Entidades;
@@ -44,6 +44,12 @@ namespace TrabajoPracticoVentaHardware.Servicio
         /// <returns>Resultado de la transaccion.</returns>
         public int InsertarProducto(Producto producto)
         {
+            if (producto.Precio > double.Parse(ConfigurationManager.AppSettings["PRODUCTO_PRECIO_MAXIMO"]))
+                throw new DatosIngresadosInvalidosException($"Precio del Producto demasiado elevado (debe ser menor a {ConfigurationManager.AppSettings["PRODUCTO_PRECIO_MAXIMO"]})");
+
+            if (producto.Stock > int.Parse(ConfigurationManager.AppSettings["PRODUCTO_STOCK_MAXIMO"]))
+                throw new DatosIngresadosInvalidosException($"Stock del Producto demasiado elevado (debe ser menor a {ConfigurationManager.AppSettings["PRODUCTO_STOCK_MAXIMO"]})");
+
             ResultadoTransaccion resultadoTransaccion = _productoDatos.InsertarProducto(producto);
 
             if (!resultadoTransaccion.IsOk) throw new TransaccionFallidaException(resultadoTransaccion.Error);

@@ -246,7 +246,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 );
                 int stock = InputHelper.PedirNumeroNatural(
                     "Ingresar stock del producto",
-                    max: int.Parse(ConfigurationManager.AppSettings["PRODUCTO_PRECIO_MAXIMO"])
+                    max: int.Parse(ConfigurationManager.AppSettings["PRODUCTO_STOCK_MAXIMO"])
                 );
 
                 Producto producto = new Producto(idCategoria, nombre, precio, stock);
