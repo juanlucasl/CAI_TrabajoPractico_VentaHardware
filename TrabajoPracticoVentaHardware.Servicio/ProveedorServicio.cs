@@ -27,6 +27,17 @@ namespace TrabajoPracticoVentaHardware.Servicio
             return _proveedorDatos.ObtenerTodos();
         }
 
+        /// <summary>Recibe el Id de un Producto y devuelve al Proveedor que lo provee.</summary>
+        /// <param name="idProducto">Id del Producto.</param>
+        /// <returns>Proveedor que provee al Producto.</returns>
+        public Proveedor ObtenerProveedorPorProducto(int idProducto)
+        {
+            if (idProducto == 0) return null;
+
+            List<Proveedor> productos = ObtenerProveedores();
+            return productos.Find(proveedor => proveedor.IdProducto == idProducto);
+        }
+
         /// <summary>Recibe un proveedor para almacenar en el sistema.</summary>
         /// <param name="proveedor">Proveedor a almacenar.</param>
         /// <returns>Resultado de la transaccion.</returns>

@@ -102,7 +102,13 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                         break;
                     }
 
-                    case 2: // Alta de cliente
+                    case 2: // Consultar cliente por Id
+                    {
+                        MostrarClientePorId();
+                        break;
+                    }
+
+                    case 3: // Alta de cliente
                     {
                         AltaCliente();
                         break;
@@ -141,6 +147,36 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             catch (Exception)
             {
                 Console.WriteLine("Ocurrio un error al consultar los clientes. Vuelva a intentar en unos minutos.");
+            }
+
+            Console.WriteLine();
+            InputHelper.PedirContinuacion();
+        }
+
+        /// <summary>Solicita al usuario un Id de Cliente y muestra el Cliente correspondiente.</summary>
+        private static void MostrarClientePorId()
+        {
+            Console.WriteLine("(Ingresar 'c' para cancelar)");
+            try
+            {
+                int idCliente = InputHelper.PedirNumeroNatural("Ingresar Id del Cliente:");
+                Cliente cliente = _clienteServicio.ObtenerClientePorId(idCliente);
+
+                if (cliente == null)
+                {
+                    InputHelper.PedirContinuacion($"No existe un cliente con Id {idCliente}.");
+                    return;
+                }
+
+                Console.WriteLine(cliente);
+            }
+            catch (AccionCanceladaException accionCanceladaException)
+            {
+                Console.WriteLine(accionCanceladaException.Message);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Ocurrio un error consultar los clientes. Vuelva a intentar en unos minutos.");
             }
 
             Console.WriteLine();
@@ -194,7 +230,13 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                         break;
                     }
 
-                    case 2: // Ingresar nuevo producto
+                    case 2: // Consultar Producto por Id
+                    {
+                        MostrarProductoPorId();
+                        break;
+                    }
+
+                    case 3: // Alta de producto
                     {
                         AltaProducto();
                         break;
@@ -228,6 +270,36 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
 
                 Console.WriteLine("Listado de productos:\n");
                 foreach (Producto producto in productos) Console.WriteLine($"{producto}\n");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Ocurrio un error consultar los productos. Vuelva a intentar en unos minutos.");
+            }
+
+            Console.WriteLine();
+            InputHelper.PedirContinuacion();
+        }
+
+        /// <summary>Solicita al usuario un Id de Producto y muestra el Producto correspondiente.</summary>
+        private static void MostrarProductoPorId()
+        {
+            Console.WriteLine("(Ingresar 'c' para cancelar)");
+            try
+            {
+                int idProducto = InputHelper.PedirNumeroNatural("Ingresar Id del Producto:");
+                Producto producto = _productoServicio.ObtenerProductoPorId(idProducto);
+
+                if (producto == null)
+                {
+                    InputHelper.PedirContinuacion($"No existe un producto con Id {idProducto}.");
+                    return;
+                }
+
+                Console.WriteLine(producto);
+            }
+            catch (AccionCanceladaException accionCanceladaException)
+            {
+                Console.WriteLine(accionCanceladaException.Message);
             }
             catch (Exception)
             {
@@ -386,7 +458,13 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                         break;
                     }
 
-                    case 2: // Alta de Proveedor
+                    case 2: // Consultar Proveedor por Id de Producto
+                    {
+                        MostrarProveedorPorIdProducto();
+                        break;
+                    }
+
+                    case 3: // Alta de Proveedor
                     {
                         AltaProveedor();
                         break;
@@ -425,6 +503,43 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             catch (Exception)
             {
                 Console.WriteLine("Ocurrio un error consultar los proveedores. Vuelva a intentar en unos minutos.");
+            }
+
+            Console.WriteLine();
+            InputHelper.PedirContinuacion();
+        }
+
+        /// <summary>Solicita al usuario un Id de Producto y muestra el Producto correspondiente.</summary>
+        private static void MostrarProveedorPorIdProducto()
+        {
+            Console.WriteLine("(Ingresar 'c' para cancelar)");
+            try
+            {
+                int idProducto = InputHelper.PedirNumeroNatural("Ingresar Id del Producto:");
+                Producto producto = _productoServicio.ObtenerProductoPorId(idProducto);
+
+                if (producto == null)
+                {
+                    InputHelper.PedirContinuacion($"No existe un producto con Id {idProducto}.");
+                    return;
+                }
+
+                Proveedor proveedor = _proveedorServicio.ObtenerProveedorPorProducto(idProducto);
+                if (proveedor == null)
+                {
+                    InputHelper.PedirContinuacion($"No existe un proveedor para el Producto {producto.Nombre}.");
+                    return;
+                }
+
+                Console.WriteLine(new ReporteProductoProveedor(producto, proveedor));
+            }
+            catch (AccionCanceladaException accionCanceladaException)
+            {
+                Console.WriteLine(accionCanceladaException.Message);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Ocurrio un error consultar los productos. Vuelva a intentar en unos minutos.");
             }
 
             Console.WriteLine();

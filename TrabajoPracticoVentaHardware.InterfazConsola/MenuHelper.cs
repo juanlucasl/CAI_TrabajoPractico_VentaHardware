@@ -22,7 +22,8 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             ConfigurationManager.AppSettings["TP_NOMBRE"],
             "Menu de clientes\n",
             "1) Consultar clientes",
-            "2) Alta de cliente",
+            "2) Consultar cliente por Id",
+            "3) Alta de cliente",
             "0) Salir del menu de clientes"
         };
 
@@ -31,7 +32,8 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             ConfigurationManager.AppSettings["TP_NOMBRE"],
             "Menu de productos\n",
             "1) Consultar productos",
-            "2) Alta de producto",
+            "2) Consultar producto por Id",
+            "3) Alta de producto",
             "0) Salir del menu de productos"
         };
 
@@ -49,7 +51,8 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             ConfigurationManager.AppSettings["TP_NOMBRE"],
             "Menu de proveedores\n",
             "1) Consultar proveedores",
-            "2) Alta de proveedor",
+            "2) Consultar proveedor por Id de producto",
+            "3) Alta de proveedor",
             "0) Salir del menu de proveedores"
         };
 

@@ -29,14 +29,14 @@ namespace TrabajoPracticoVentaHardware.Servicio
         /// <summary>
         /// Recibe un Id y devuelve el Producto correspondiente a ese Id, o null si no existe el Producto.
         /// </summary>
-        /// <param name="productoId">Id de Producto</param>
+        /// <param name="idProducto">Id de Producto</param>
         /// <returns>Producto correspondiente al Id</returns>
-        public Producto ObtenerProductoPorId(int productoId)
+        public Producto ObtenerProductoPorId(int idProducto)
         {
-            if (productoId == 0) return null;
+            if (idProducto == 0) return null;
 
             List<Producto> productos = ObtenerProductos();
-            return productos.Find(producto => producto.Id == productoId);
+            return productos.Find(producto => producto.Id == idProducto);
         }
 
         /// <summary>Recibe un producto para almacenar en el sistema.</summary>
