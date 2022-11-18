@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using TrabajoPracticoVentaHardware.AccesoDatos;
 using TrabajoPracticoVentaHardware.Entidades;
 using TrabajoPracticoVentaHardware.Entidades.Excepciones;
@@ -28,6 +29,21 @@ namespace TrabajoPracticoVentaHardware.Servicio
         public List<Venta> ObtenerVentas()
         {
             return _ventaDatos.ObtenerTodas();
+        }
+
+        /// <summary>Recibe un Producto y devuelve las Ventas en las que se haya vendido el Producto.</summary>
+        /// <param name="producto">Producto.</param>
+        /// <returns>Ventas del Producto.</returns>
+        public List<VentaProductoHelper> ObtenerVentasPorProducto(Producto producto)
+        {
+            if (producto == null) return null;
+
+            List<Venta> ventasDelProducto = ObtenerVentas().FindAll(venta => venta.IdProducto == producto.Id);
+            if(!ventasDelProducto.Any()) return null; // Devolver null si no hay ventas del Producto.
+
+            List<Cliente> clientes = _clienteServicio.ObtenerClientes();
+            List<VentaProductoHelper> ventasProducto = ReporteHelper.VincularVentasYProductos(ventasDelProducto, clientes, producto);
+            return ventasProducto;
         }
 
         /// <summary>Recibe una venta para almacenar en el sistema.</summary>
