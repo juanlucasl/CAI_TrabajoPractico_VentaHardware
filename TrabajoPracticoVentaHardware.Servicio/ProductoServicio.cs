@@ -44,6 +44,8 @@ namespace TrabajoPracticoVentaHardware.Servicio
         /// <returns>Resultado de la transaccion.</returns>
         public int InsertarProducto(Producto producto)
         {
+            if (producto.Precio < 0.01) throw new DatosIngresadosInvalidosException("El precio del Producto no es valido.");
+
             if (producto.Precio > double.Parse(ConfigurationManager.AppSettings["PRODUCTO_PRECIO_MAXIMO"]))
                 throw new DatosIngresadosInvalidosException($"Precio del Producto demasiado elevado (debe ser menor a {ConfigurationManager.AppSettings["PRODUCTO_PRECIO_MAXIMO"]})");
 
