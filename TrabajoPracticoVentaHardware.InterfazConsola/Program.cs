@@ -12,13 +12,15 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
     {
         private static ClienteServicio _clienteServicio;
         private static ProductoServicio _productoServicio;
+        private static VentaServicio _ventaServicio;
         private static ProveedorServicio _proveedorServicio;
         private static ReporteServicio _reporteServicio;
 
-        static void Main(string[] args)
+        static void Main()
         {
             _clienteServicio = new ClienteServicio();
             _productoServicio = new ProductoServicio();
+            _ventaServicio = new VentaServicio();
             _proveedorServicio = new ProveedorServicio();
             _reporteServicio = new ReporteServicio();
 
@@ -40,6 +42,12 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                     case 2: // Submenu de productos
                     {
                         MenuProductos();
+                        break;
+                    }
+
+                    case 3: // Submenu de ventas
+                    {
+                        MenuVentas();
                         break;
                     }
 
@@ -130,7 +138,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 Console.WriteLine("Listado de clientes:\n");
                 foreach (Cliente cliente in clientes) Console.WriteLine($"{cliente}\n");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.WriteLine("Ocurrio un error al consultar los clientes. Vuelva a intentar en unos minutos.");
             }
@@ -221,7 +229,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 Console.WriteLine("Listado de productos:\n");
                 foreach (Producto producto in productos) Console.WriteLine($"{producto}\n");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.WriteLine("Ocurrio un error consultar los productos. Vuelva a intentar en unos minutos.");
             }
@@ -261,6 +269,102 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             catch (Exception e)
             {
                 InputHelper.PedirContinuacion($"Ocurrio un error al dar de alta al producto: {e.Message}");
+            }
+        }
+
+        /// <summary>Muestra el menu de ventas.</summary>
+        private static void MenuVentas()
+        {
+            int opcionMenu;
+
+            do
+            {
+                MenuHelper.MostrarMenu(MenuHelper.OpcionesMenuVenta);
+                opcionMenu = InputHelper.PedirOpcionMenu();
+
+                switch (opcionMenu)
+                {
+                    case 1: // Consultar Ventas
+                    {
+                        MostrarVentas();
+                        break;
+                    }
+
+                    case 2: // Alta de venta
+                    {
+                        AltaVenta();
+                        break;
+                    }
+                    case 0: // Volver al Menu principal.
+                    {
+                        break;
+                    }
+
+                    default: // Opcion invalida
+                    {
+                        InputHelper.PedirContinuacion($"La opcion {opcionMenu} no es valida.");
+                        break;
+                    }
+                }
+            } while (opcionMenu != 0);
+        }
+
+        /// <summary>Muestra en consola un listado de todas las ventas correspondientes al TP.</summary>
+        private static void MostrarVentas()
+        {
+            try
+            {
+                List<Venta> ventas = _ventaServicio.ObtenerVentas();
+
+                if (ventas == null || !ventas.Any())
+                {
+                    InputHelper.PedirContinuacion("No hay ventas disponibles.");
+                    return;
+                }
+
+                Console.WriteLine("Listado de ventas:\n");
+                foreach (Venta venta in ventas) Console.WriteLine($"{venta}\n");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Ocurrio un error consultar las ventas. Vuelva a intentar en unos minutos.");
+            }
+
+            Console.WriteLine();
+            InputHelper.PedirContinuacion();
+        }
+
+        /// <summary>
+        /// Solicita informacion para dar de alta a una nueva venta y envia la peticion de alta al servicio.
+        /// </summary>
+        private static void AltaVenta()
+        {
+            Console.WriteLine("(Ingresar 'c' para cancelar)");
+            try
+            {
+                int idCliente = InputHelper.PedirNumeroNatural("Ingresar Id del cliente que fue participe de la venta:");
+                int idProducto = InputHelper.PedirNumeroNatural("Ingresar Id del producto que se vendio al cliente:");
+                int cantidad = InputHelper.PedirNumeroNatural(
+                    "Ingresar cantidad de producto que se vendio al cliente:",
+                    max: int.Parse(ConfigurationManager.AppSettings["PRODUCTO_STOCK_MAXIMO"])
+                );
+
+                Venta venta = new Venta(idCliente, idProducto, cantidad);
+
+                _ventaServicio.InsertarVenta(venta);
+                InputHelper.PedirContinuacion($"Venta ingresada con exito");
+            }
+            catch (AccionCanceladaException accionCanceladaException)
+            {
+                InputHelper.PedirContinuacion(accionCanceladaException.Message);
+            }
+            catch (DatosIngresadosInvalidosException datosIngresadosInvalidosException)
+            {
+                InputHelper.PedirContinuacion(datosIngresadosInvalidosException.Message);
+            }
+            catch (Exception e)
+            {
+                InputHelper.PedirContinuacion($"Ocurrio un error al dar de alta a la venta: {e.Message}");
             }
         }
 
@@ -318,7 +422,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 Console.WriteLine("Listado de proveedores:\n");
                 foreach (Proveedor proveedor in proveedores) Console.WriteLine($"{proveedor}\n");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.WriteLine("Ocurrio un error consultar los proveedores. Vuelva a intentar en unos minutos.");
             }
@@ -336,7 +440,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             try
             {
                 string nombre = InputHelper.PedirString("Ingresar nombre del proveedor:", true);
-                int idProducto = InputHelper.PedirNumeroNatural("Insertar ID del producto que provee el proveedor:");
+                int idProducto = InputHelper.PedirNumeroNatural("Ingresar Id del producto que provee el proveedor:");
 
                 Proveedor proveedor = new Proveedor(idProducto, nombre);
 
@@ -347,9 +451,9 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             {
                 InputHelper.PedirContinuacion(accionCanceladaException.Message);
             }
-            catch (InvalidOperationException)
+            catch (DatosIngresadosInvalidosException datosIngresadosInvalidosException)
             {
-                InputHelper.PedirContinuacion("No existe un producto con el id indicado.");
+                InputHelper.PedirContinuacion(datosIngresadosInvalidosException.Message);
             }
             catch (Exception e)
             {
@@ -415,7 +519,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 foreach (ReporteVentasCliente ventasCliente in reporteVentasPorCliente)
                     Console.WriteLine($"{ventasCliente}\n");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.WriteLine("Ocurrio un error al emitir el reporte de ventas por cliente. Vuelva a intentar en unos minutos.");
             }
@@ -444,7 +548,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 foreach (ReporteProductoProveedor productoProveedor in reporteProductoPorProveedor)
                     Console.WriteLine($"{productoProveedor}\n");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Console.WriteLine("Ocurrio un error al emitir el reporte de producto por proveedor. Vuelva a intentar en unos minutos.");
             }

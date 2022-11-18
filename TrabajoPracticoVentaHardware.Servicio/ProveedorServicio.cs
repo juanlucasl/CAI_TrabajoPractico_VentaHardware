@@ -34,7 +34,7 @@ namespace TrabajoPracticoVentaHardware.Servicio
         {
             Producto productoProveedor = _productoServicio.ObtenerProductoPorId(proveedor.IdProducto);
             if (productoProveedor == null)
-                throw new DatosIngresadosInvalidosException($"No existe un Producto con id {proveedor.IdProducto}");
+                throw new DatosIngresadosInvalidosException($"No existe un Producto con Id {proveedor.IdProducto}");
 
             ResultadoTransaccion resultadoTransaccion = _proveedorDatos.InsertarProveedor(proveedor);
 

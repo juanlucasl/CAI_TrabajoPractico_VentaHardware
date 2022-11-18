@@ -26,6 +26,19 @@ namespace TrabajoPracticoVentaHardware.Servicio
         }
 
         /// <summary>
+        /// Recibe un Id y devuelve el Cliente correspondiente a ese Id, o null si no existe el Cliente.
+        /// </summary>
+        /// <param name="clienteId">Id de Cliente</param>
+        /// <returns>Cliente correspondiente al Id</returns>
+        public Cliente ObtenerClientePorId(int clienteId)
+        {
+            if (clienteId == 0) return null;
+
+            List<Cliente> clientes = ObtenerClientes();
+            return clientes.Find(cliente => cliente.Id == clienteId);
+        }
+
+        /// <summary>
         /// Recibe un string con un email y devuelve el Cliente correspondiente a ese email, o null si no existe el
         /// Cliente.
         /// </summary>
