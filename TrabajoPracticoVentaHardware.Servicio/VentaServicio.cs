@@ -51,6 +51,8 @@ namespace TrabajoPracticoVentaHardware.Servicio
         /// <returns>Resultado de la transaccion.</returns>
         public int InsertarVenta(Venta venta)
         {
+            if (venta.Cantidad < 0) throw new DatosIngresadosInvalidosException("La cantidad ingresada no es valida.");
+
             if (venta.Cantidad > int.Parse(ConfigurationManager.AppSettings["PRODUCTO_STOCK_MAXIMO"]))
                 throw new DatosIngresadosInvalidosException($"Cantidad vendida demasiado elevada (debe ser menor a {ConfigurationManager.AppSettings["PRODUCTO_STOCK_MAXIMO"]})");
 

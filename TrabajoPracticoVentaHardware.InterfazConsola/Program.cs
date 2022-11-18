@@ -322,7 +322,9 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                 Categoria idCategoria = InputHelper.PedirCategoria();
                 double precio = InputHelper.PedirNumeroReal(
                     "Ingresar precio del producto (se redondeara a dos decimales):",
-                    max: double.Parse(ConfigurationManager.AppSettings["PRODUCTO_PRECIO_MAXIMO"])
+                    0.01,
+                    double.Parse(ConfigurationManager.AppSettings["PRODUCTO_PRECIO_MAXIMO"]),
+                    true
                 );
                 int stock = InputHelper.PedirNumeroNatural(
                     "Ingresar stock del producto",
@@ -460,11 +462,13 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             Console.WriteLine("(Ingresar 'c' para cancelar)");
             try
             {
-                int idCliente = InputHelper.PedirNumeroNatural("Ingresar Id del cliente que fue participe de la venta:");
-                int idProducto = InputHelper.PedirNumeroNatural("Ingresar Id del producto que se vendio al cliente:");
+                int idCliente = InputHelper.PedirNumeroNatural("Ingresar Id del cliente que fue participe de la venta:", obligatorio: true);
+                int idProducto = InputHelper.PedirNumeroNatural("Ingresar Id del producto que se vendio al cliente:", obligatorio: true);
                 int cantidad = InputHelper.PedirNumeroNatural(
                     "Ingresar cantidad de producto que se vendio al cliente:",
-                    max: int.Parse(ConfigurationManager.AppSettings["PRODUCTO_STOCK_MAXIMO"])
+                    1,
+                    int.Parse(ConfigurationManager.AppSettings["PRODUCTO_STOCK_MAXIMO"]),
+                    true
                 );
 
                 Venta venta = new Venta(idCliente, idProducto, cantidad);
@@ -601,7 +605,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             try
             {
                 string nombre = InputHelper.PedirString("Ingresar nombre del proveedor:", true);
-                int idProducto = InputHelper.PedirNumeroNatural("Ingresar Id del producto que provee el proveedor:");
+                int idProducto = InputHelper.PedirNumeroNatural("Ingresar Id del producto que provee el proveedor:", obligatorio: true);
 
                 Proveedor proveedor = new Proveedor(idProducto, nombre);
 
