@@ -102,7 +102,13 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                         break;
                     }
 
-                    case 2: // Alta de cliente
+                    case 2: // Consultar cliente por Id
+                    {
+                        MostrarClientePorId();
+                        break;
+                    }
+
+                    case 3: // Alta de cliente
                     {
                         AltaCliente();
                         break;
@@ -141,6 +147,36 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             catch (Exception)
             {
                 Console.WriteLine("Ocurrio un error al consultar los clientes. Vuelva a intentar en unos minutos.");
+            }
+
+            Console.WriteLine();
+            InputHelper.PedirContinuacion();
+        }
+
+        /// <summary>Solicita al usuario un Id de Cliente y muestra el Cliente correspondiente.</summary>
+        private static void MostrarClientePorId()
+        {
+            Console.WriteLine("(Ingresar 'c' para cancelar)");
+            try
+            {
+                int clienteId = InputHelper.PedirNumeroNatural("Ingresar Id del Cliente:");
+                Cliente cliente = _clienteServicio.ObtenerClientePorId(clienteId);
+
+                if (cliente == null)
+                {
+                    InputHelper.PedirContinuacion($"No existe un cliente con Id {clienteId}.");
+                    return;
+                }
+
+                Console.WriteLine(cliente);
+            }
+            catch (AccionCanceladaException accionCanceladaException)
+            {
+                Console.WriteLine(accionCanceladaException.Message);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Ocurrio un error consultar los clientes. Vuelva a intentar en unos minutos.");
             }
 
             Console.WriteLine();
@@ -255,7 +291,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
 
                 if (producto == null)
                 {
-                    InputHelper.PedirContinuacion($"No existe un Producto con Id {productoId}.");
+                    InputHelper.PedirContinuacion($"No existe un producto con Id {productoId}.");
                     return;
                 }
 
