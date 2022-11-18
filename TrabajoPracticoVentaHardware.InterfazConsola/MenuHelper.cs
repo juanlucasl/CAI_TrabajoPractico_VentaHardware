@@ -31,7 +31,8 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             ConfigurationManager.AppSettings["TP_NOMBRE"],
             "Menu de productos\n",
             "1) Consultar productos",
-            "2) Alta de producto",
+            "2) Consultar producto por Id",
+            "3) Alta de producto",
             "0) Salir del menu de productos"
         };
 

@@ -194,7 +194,13 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                         break;
                     }
 
-                    case 2: // Ingresar nuevo producto
+                    case 2: // Consultar Producto por Id
+                    {
+                        MostrarProductoPorId();
+                        break;
+                    }
+
+                    case 3: // Alta de producto
                     {
                         AltaProducto();
                         break;
@@ -228,6 +234,36 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
 
                 Console.WriteLine("Listado de productos:\n");
                 foreach (Producto producto in productos) Console.WriteLine($"{producto}\n");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Ocurrio un error consultar los productos. Vuelva a intentar en unos minutos.");
+            }
+
+            Console.WriteLine();
+            InputHelper.PedirContinuacion();
+        }
+
+        /// <summary>Solicita al usuario un Id de Producto y muestra el Producto correspondiente.</summary>
+        private static void MostrarProductoPorId()
+        {
+            Console.WriteLine("(Ingresar 'c' para cancelar)");
+            try
+            {
+                int productoId = InputHelper.PedirNumeroNatural("Ingresar Id del Producto:");
+                Producto producto = _productoServicio.ObtenerProductoPorId(productoId);
+
+                if (producto == null)
+                {
+                    InputHelper.PedirContinuacion($"No existe un Producto con Id {productoId}.");
+                    return;
+                }
+
+                Console.WriteLine(producto);
+            }
+            catch (AccionCanceladaException accionCanceladaException)
+            {
+                Console.WriteLine(accionCanceladaException.Message);
             }
             catch (Exception)
             {
