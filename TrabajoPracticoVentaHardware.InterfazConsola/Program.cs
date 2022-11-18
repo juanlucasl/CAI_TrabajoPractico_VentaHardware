@@ -362,7 +362,13 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                         break;
                     }
 
-                    case 2: // Alta de venta
+                    case 2: // Consultar ventas por Id de Producto
+                    {
+                        MostrarVentasPorIdProducto();
+                        break;
+                    }
+
+                    case 3: // Alta de venta
                     {
                         AltaVenta();
                         break;
@@ -396,6 +402,46 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
 
                 Console.WriteLine("Listado de ventas:\n");
                 foreach (Venta venta in ventas) Console.WriteLine($"{venta}\n");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Ocurrio un error consultar las ventas. Vuelva a intentar en unos minutos.");
+            }
+
+            Console.WriteLine();
+            InputHelper.PedirContinuacion();
+        }
+
+        /// <summary>
+        /// Solicita al usuario un Id de Producto y muestra las Ventas en las que se haya vendido el Producto.
+        /// </summary>
+        private static void MostrarVentasPorIdProducto()
+        {
+            Console.WriteLine("(Ingresar 'c' para cancelar)");
+            try
+            {
+                int idProducto = InputHelper.PedirNumeroNatural("Ingresar Id del Producto:");
+                Producto producto = _productoServicio.ObtenerProductoPorId(idProducto);
+
+                if (producto == null)
+                {
+                    InputHelper.PedirContinuacion($"No existe un producto con Id {idProducto}.");
+                    return;
+                }
+
+                List<VentaProductoHelper> ventasPorProducto = _ventaServicio.ObtenerVentasPorProducto(producto);
+                if (ventasPorProducto == null || !ventasPorProducto.Any())
+                {
+                    InputHelper.PedirContinuacion($"No hay ventas para el Producto {producto.Nombre}.");
+                    return;
+                }
+
+                Console.WriteLine($"{producto}\n");
+                foreach (VentaProductoHelper ventaProducto in ventasPorProducto) Console.WriteLine(ventaProducto);
+            }
+            catch (AccionCanceladaException accionCanceladaException)
+            {
+                Console.WriteLine(accionCanceladaException.Message);
             }
             catch (Exception)
             {
@@ -509,7 +555,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             InputHelper.PedirContinuacion();
         }
 
-        /// <summary>Solicita al usuario un Id de Producto y muestra el Producto correspondiente.</summary>
+        /// <summary>Solicita al usuario un Id de Producto y muestra el Proveedor que lo provee.</summary>
         private static void MostrarProveedorPorIdProducto()
         {
             Console.WriteLine("(Ingresar 'c' para cancelar)");
@@ -524,7 +570,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                     return;
                 }
 
-                Proveedor proveedor = _proveedorServicio.ObtenerProveedorPorProducto(idProducto);
+                Proveedor proveedor = _proveedorServicio.ObtenerProveedorPorProducto(producto);
                 if (proveedor == null)
                 {
                     InputHelper.PedirContinuacion($"No existe un proveedor para el Producto {producto.Nombre}.");
