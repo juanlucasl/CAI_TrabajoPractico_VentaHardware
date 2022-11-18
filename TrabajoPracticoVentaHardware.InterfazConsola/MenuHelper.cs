@@ -40,6 +40,7 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             ConfigurationManager.AppSettings["TP_NOMBRE"],
             "Menu de ventas\n",
             "1) Consultar ventas",
+            "2) Alta de ventas",
             "0) Salir del menu de ventas"
         };
 

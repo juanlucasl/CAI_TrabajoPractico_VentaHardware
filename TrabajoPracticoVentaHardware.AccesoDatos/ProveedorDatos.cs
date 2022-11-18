@@ -51,6 +51,7 @@ namespace TrabajoPracticoVentaHardware.AccesoDatos
             {
                 { "Nombre", proveedor.Nombre },
                 { "IdProducto", proveedor.IdProducto.ToString() },
+                { "FechaAlta", proveedor.FechaAlta.ToString("yyyy-MM-dd") },
                 { "Usuario", ConfigurationManager.AppSettings["TP_ID"] }
             };
 
