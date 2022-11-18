@@ -159,12 +159,12 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             Console.WriteLine("(Ingresar 'c' para cancelar)");
             try
             {
-                int clienteId = InputHelper.PedirNumeroNatural("Ingresar Id del Cliente:");
-                Cliente cliente = _clienteServicio.ObtenerClientePorId(clienteId);
+                int idCliente = InputHelper.PedirNumeroNatural("Ingresar Id del Cliente:");
+                Cliente cliente = _clienteServicio.ObtenerClientePorId(idCliente);
 
                 if (cliente == null)
                 {
-                    InputHelper.PedirContinuacion($"No existe un cliente con Id {clienteId}.");
+                    InputHelper.PedirContinuacion($"No existe un cliente con Id {idCliente}.");
                     return;
                 }
 
@@ -286,12 +286,12 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             Console.WriteLine("(Ingresar 'c' para cancelar)");
             try
             {
-                int productoId = InputHelper.PedirNumeroNatural("Ingresar Id del Producto:");
-                Producto producto = _productoServicio.ObtenerProductoPorId(productoId);
+                int idProducto = InputHelper.PedirNumeroNatural("Ingresar Id del Producto:");
+                Producto producto = _productoServicio.ObtenerProductoPorId(idProducto);
 
                 if (producto == null)
                 {
-                    InputHelper.PedirContinuacion($"No existe un producto con Id {productoId}.");
+                    InputHelper.PedirContinuacion($"No existe un producto con Id {idProducto}.");
                     return;
                 }
 
@@ -458,7 +458,13 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
                         break;
                     }
 
-                    case 2: // Alta de Proveedor
+                    case 2: // Consultar Proveedor por Id de Producto
+                    {
+                        MostrarProveedorPorIdProducto();
+                        break;
+                    }
+
+                    case 3: // Alta de Proveedor
                     {
                         AltaProveedor();
                         break;
@@ -497,6 +503,43 @@ namespace TrabajoPracticoVentaHardware.InterfazConsola
             catch (Exception)
             {
                 Console.WriteLine("Ocurrio un error consultar los proveedores. Vuelva a intentar en unos minutos.");
+            }
+
+            Console.WriteLine();
+            InputHelper.PedirContinuacion();
+        }
+
+        /// <summary>Solicita al usuario un Id de Producto y muestra el Producto correspondiente.</summary>
+        private static void MostrarProveedorPorIdProducto()
+        {
+            Console.WriteLine("(Ingresar 'c' para cancelar)");
+            try
+            {
+                int idProducto = InputHelper.PedirNumeroNatural("Ingresar Id del Producto:");
+                Producto producto = _productoServicio.ObtenerProductoPorId(idProducto);
+
+                if (producto == null)
+                {
+                    InputHelper.PedirContinuacion($"No existe un producto con Id {idProducto}.");
+                    return;
+                }
+
+                Proveedor proveedor = _proveedorServicio.ObtenerProveedorPorProducto(idProducto);
+                if (proveedor == null)
+                {
+                    InputHelper.PedirContinuacion($"No existe un proveedor para el Producto {producto.Nombre}.");
+                    return;
+                }
+
+                Console.WriteLine(new ReporteProductoProveedor(producto, proveedor));
+            }
+            catch (AccionCanceladaException accionCanceladaException)
+            {
+                Console.WriteLine(accionCanceladaException.Message);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Ocurrio un error consultar los productos. Vuelva a intentar en unos minutos.");
             }
 
             Console.WriteLine();
